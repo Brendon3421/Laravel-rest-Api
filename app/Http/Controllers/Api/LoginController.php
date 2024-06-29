@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,19 +22,31 @@ class LoginController extends Controller
 do usuario que foi solicitado mas se der errado ele da uma mensagem falha de login ou senha incorreta
 
 */
+    //retorna a view de login
+    public function authView()
+    {
+        return view('login');
+    }
+    //retorna a view de regiter
+    public function authRegister()
+    {
+        return view('registrarUser');
+    }
+
+
     public function auth(Request $request): JsonResponse
     {
-        // validar o email e senha 
+        // Validar o email e senha
         if (Auth::attempt([
             'email' => $request->email, 'password' => $request->password
         ])) {
-
-            //recupera os dados do usuario 
+            // Recupera os dados do usuário autenticado
             $user = Auth::user();
 
+            // Criar um token para o usuário (exemplo de uso de tokens API)
             $token = $request->user()->createToken('api-token')->plainTextToken;
 
-            //retorna o status de sucesso
+            // Retorna uma resposta JSON de sucesso com o token e informações do usuário
             return response()->json([
                 'status' => true,
                 'token' => $token,
@@ -41,10 +54,11 @@ do usuario que foi solicitado mas se der errado ele da uma mensagem falha de log
                 'message' => "Logado com sucesso",
             ], 201);
         } else {
-            // retorna que deu erro durante o processo de login
+            // Retorna uma resposta JSON de erro se o login falhar
+            // Aqui você redireciona de volta para a tela de login
             return response()->json([
                 'status' => false,
-                'message' => 'Login ou senha incorreta',
+                'error' => 'Login ou senha incorreta',
             ], 404);
         }
     }
@@ -52,15 +66,16 @@ do usuario que foi solicitado mas se der errado ele da uma mensagem falha de log
     public function logout(User $user): JsonResponse
     {
         try {
-            $user->tokens()->delete();
+            Auth::logout();
+            Session::flush();
+
             return response()->json([
                 'status' => true,
                 'nome do usuario' => $user->name,
                 'message' => 'usuario foi desconectado com sucesso',
             ], 200);
-
         } catch (Exception $e) {
-    return response()->json([
+            return response()->json([
                 'status' => false,
                 'message' => 'usuario nao foi desconectado ',
             ], 400);

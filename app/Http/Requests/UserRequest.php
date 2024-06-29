@@ -30,7 +30,6 @@ class UserRequest extends FormRequest
     {
         // recuperar o id que esta sendo enviado na rota na url
         $userID =  $this->route('user');
-
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . ($userID ? $userID->id : null),
