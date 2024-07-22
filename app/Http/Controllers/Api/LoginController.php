@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mockery\Expectation;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -30,9 +30,8 @@ do usuario que foi solicitado mas se der errado ele da uma mensagem falha de log
     //retorna a view de regiter
     public function authRegister()
     {
-        return view('registrarUser');
+        return view('forms.registrarUser');
     }
-
 
     public function auth(Request $request): JsonResponse
     {
@@ -42,10 +41,10 @@ do usuario que foi solicitado mas se der errado ele da uma mensagem falha de log
         ])) {
             // Recupera os dados do usuário autenticado
             $user = Auth::user();
-
+    
             // Criar um token para o usuário (exemplo de uso de tokens API)
             $token = $request->user()->createToken('api-token')->plainTextToken;
-
+    
             // Retorna uma resposta JSON de sucesso com o token e informações do usuário
             return response()->json([
                 'status' => true,
@@ -62,6 +61,7 @@ do usuario que foi solicitado mas se der errado ele da uma mensagem falha de log
             ], 404);
         }
     }
+    
     // realiza o logout do usuario 
     public function logout(User $user): JsonResponse
     {
@@ -81,4 +81,5 @@ do usuario que foi solicitado mas se der errado ele da uma mensagem falha de log
             ], 400);
         }
     }
+
 }

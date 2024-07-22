@@ -8,9 +8,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -21,37 +18,32 @@ class UserRequest extends FormRequest
         throw new HttpResponseException(response()->json(
             [
                 'status' => false,
-                'erros' => $validator->errors()
+                'errors' => $validator->errors()
             ], 422));
     }
-// o erro 422 e quando deu erro por conta da validacao 
 
     public function rules(): array
     {
-        // recuperar o id que esta sendo enviado na rota na url
-        $userID =  $this->route('user');
+        $userID = $this->route('user');
         return [
-            'name' => 'required',
+            'name' => 'required' . ($userID ? $userID->id : null),
             'email' => 'required|email|unique:users,email,' . ($userID ? $userID->id : null),
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
+            'genero_id' => 'required'. ($userID ? $userID->id : null)
         ];
     }
 
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function messages(): array
     {
         return [
-            'name.required' => "O campo nome e Obrigatorio ",
-            'email.required' => "O campo email e Obrigatorio",
-            'email.email' => "voce e burro e nao sabe escrever um email arrombado",
-            'email.unique' => "Email ja esta em Uso",
-            'password.required' => "senha e obrigatorio",
-            'password.min' => "o minimo e 6 caracteres ",
+            'name.required' => "O campo nome é obrigatório.",
+            'email.required' => "O campo email é obrigatório.",
+            'email.email' => "O campo deve ser um e-mail válido.",
+            'email.unique' => "Email já está em uso.",
+            'password.required' => "Senha é obrigatória.",
+            'password.min' => "O mínimo é 6 caracteres.",
+            'genero_id.required' => "O campo de genero e obrigatorio",
         ];
     }
 }
+

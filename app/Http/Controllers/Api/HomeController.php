@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genero;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,8 +12,10 @@ class HomeController extends Controller
     {
         
     }
-    public function show()
+    
+    public function index()
     {
-        return view('home');
+        $generos = Genero::all();
+        return view('layout', compact('generos'));
     }
 }

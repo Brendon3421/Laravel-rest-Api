@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Mockery\Expectation;
 
 class UserController extends Controller
@@ -19,6 +20,12 @@ class UserController extends Controller
     public function __construct()
     {
     }
+
+    public function genero()
+    {
+  
+    }
+
 
     public function index(): JsonResponse
     {
@@ -34,46 +41,39 @@ class UserController extends Controller
     // : JsonResponse Tipagem da API
     public function show(User $user): JsonResponse
     {
+        //retorna o o usuario que passar o id na url
         return response()->json([
             'status' => true,
             'user' => $user,
         ], 200);
     }
 
+
     public function store(UserRequest $request): JsonResponse
     {
-
-        DB::beginTransaction();
-
         try {
-            $user =  User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
-            // quando ele commitar/enviar para o banco`-`
+            DB::beginTransaction();
+            $user = User::create($request->validated());
             DB::commit();
             return response()->json([
                 'status' => true,
                 'user' => $user,
-                "message" => "ele deu certo xara"
+                'message' => 'Usuário cadastrado com sucesso'
             ], 201);
         } catch (Exception $e) {
-            // Operacao de erro 
             DB::rollBack();
-            // deve retorna uma mensagem de erro status 400     
             return response()->json([
                 'status' => false,
-                "message" => "fudeu essa bomba e num cadastro "
+                'message' => 'Erro ao cadastrar usuário'
             ], 400);
         }
     }
+
 
     public function update(UserRequest $request, User $user): JsonResponse
     {
         // iniciar a transacao
         DB::beginTransaction();
-
         try {
             // editar
             $user->update([
@@ -105,23 +105,26 @@ class UserController extends Controller
 
     public function destroy(User $user): JsonResponse
     {
-
+        DB::beginTransaction();
 
         try {
-            // apagar o usuario do banco de dados
+            // Apagar o usuário do banco de dados
             $user->delete();
-            // retorna se apagou com sucesso
+            // Confirmar a transação
+            DB::commit();
+            // Retorna se apagou com sucesso
             return response()->json([
                 'status' => true,
-                'message' => "usuario excluido com sucesso"
+                'message' => "Usuário excluído com sucesso"
             ], 200);
         } catch (Exception $e) {
-            //operacao de erro
+            // Reverter a transação em caso de erro
             DB::rollBack();
-            //retorna
+            // Retorna a mensagem de erro
             return response()->json([
                 'status' => false,
-                'message' => "Ocorreu um erro durante o processo de excluir "
+                'message' => "Ocorreu um erro durante o processo de exclusão",
+                'error' => $e->getMessage() // Opcional: Adicionar a mensagem de erro para depuração
             ], 400);
         }
     }
