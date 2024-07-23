@@ -27,8 +27,10 @@ class GeneroController extends Controller
         ], 200);
     }
 
+
     public function store(GeneroRequest $request): JsonResponse
     {
+    
         try {
             $genero = Genero::create($request->validated());
             return response()->json([

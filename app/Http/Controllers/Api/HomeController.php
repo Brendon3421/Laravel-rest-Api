@@ -14,8 +14,8 @@ class HomeController extends Controller
     }
     
     public function index()
-    {
+    { 
         $generos = Genero::all();
-        return view('layout', compact('generos'));
+        return view('index', compact('generos'));
     }
 }

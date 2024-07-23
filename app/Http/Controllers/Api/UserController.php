@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EnderecoRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\Endereco;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -23,7 +25,6 @@ class UserController extends Controller
 
     public function genero()
     {
-  
     }
 
 
@@ -49,22 +50,31 @@ class UserController extends Controller
     }
 
 
-    public function store(UserRequest $request): JsonResponse
+    public function store(UserRequest $request, EnderecoRequest $enderecoRequest): JsonResponse
     {
         try {
             DB::beginTransaction();
+            //cria o usuario
             $user = User::create($request->validated());
+
+            //cria o endereco
+            $enderecoData = $enderecoRequest->validated();
+            $enderecoData['user_id'] = $user->id;
+            $endereco = Endereco::create($enderecoData);
+
             DB::commit();
             return response()->json([
                 'status' => true,
                 'user' => $user,
+                'Endereco' => $endereco,
                 'message' => 'Usuário cadastrado com sucesso'
             ], 201);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao cadastrar usuário'
+                'message' => 'Erro ao cadastrar usuário',
+                'error' =>  $e->getMessage()
             ], 400);
         }
     }
