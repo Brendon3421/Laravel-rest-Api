@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
             'name' => 'Brendon',
             'email' => 'brendon@cooperostesc.com.br',
             'password'  => Hash::make('terra02', ['rounds'=> 12]),
-            'genero_id' => 2
+            'genero_id' => 2,
+            'situacao_id' => 1
         ]);
       }
     }

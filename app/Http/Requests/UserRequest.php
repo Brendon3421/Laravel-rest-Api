@@ -13,23 +13,26 @@ class UserRequest extends FormRequest
         return true;
     }
 
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(
             [
                 'status' => false,
                 'errors' => $validator->errors()
-            ], 422));
+            ],
+            422
+        ));
     }
 
     public function rules(): array
     {
         $userID = $this->route('user');
         return [
-            'name' => 'required' . ($userID ? $userID->id : null),
-            'email' => 'required|email|unique:users,email,' . ($userID ? $userID->id : null),
-            'password' => 'required|min:6',
-            'genero_id' => 'required'. ($userID ? $userID->id : null)
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . ($userID ? $userID->id : 'NULL'),
+            'password' => $userID ? 'nullable|min:6' : 'required|min:6', // senha não é obrigatória na atualização
+            'genero_id' => 'required|exists:genero,id',
+            'situacao_id' => 'required|exists:situacao,id'
         ];
     }
 
@@ -42,8 +45,10 @@ class UserRequest extends FormRequest
             'email.unique' => "Email já está em uso.",
             'password.required' => "Senha é obrigatória.",
             'password.min' => "O mínimo é 6 caracteres.",
-            'genero_id.required' => "O campo de genero e obrigatorio",
+            'genero_id.required' => "O campo de genero é obrigatório.",
+            'genero_id.exists' => "O gênero selecionado não existe.",
+            'situacao_id.required' => "O campo de situação é obrigatório.",
+            'situacao_id.exists' => "A situação selecionada não existe."
         ];
     }
 }
-

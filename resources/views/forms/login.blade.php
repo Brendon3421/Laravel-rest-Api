@@ -61,7 +61,7 @@
 
                     // Redirecionar após alguns segundos
                     setTimeout(() => {
-                        window.location.href = '/home.dashboard'; // Substitua pelo caminho desejado
+                        window.location.href = '/dashboard'; // Substitua pelo caminho desejado
                     }, 2000);
                 } else {
                     // Erros - Mostrar mensagens de erro no modal de login

@@ -30,7 +30,6 @@ class GeneroController extends Controller
 
     public function store(GeneroRequest $request): JsonResponse
     {
-    
         try {
             $genero = Genero::create($request->validated());
             return response()->json([
@@ -49,14 +48,11 @@ class GeneroController extends Controller
 
     public function update(GeneroRequest $request, Genero $genero): JsonResponse
     {
-        DB::beginTransaction();
-
         try {
             // Atualiza o gênero com sucesso
+            DB::beginTransaction();
             $genero->update($request->validated());
-
             DB::commit();
-
             return response()->json([
                 'status' => true,
                 'genero' => $genero,
@@ -64,7 +60,6 @@ class GeneroController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-
             return response()->json([
                 'status' => false,
                 'message' => "Nao foi possivel editar",

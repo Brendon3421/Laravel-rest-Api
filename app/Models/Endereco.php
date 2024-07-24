@@ -18,11 +18,21 @@ class Endereco extends Model
     // Defina quais campos podem ser preenchidos em massa
     protected $fillable = [
         'user_id',
+        'situacao_id',
         'name',
         'cep',
         'rua',
         'numero',
         'complemento',
-        
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function situacao()
+    {
+        return $this->belongsTo(Situacao::class);
+    }
 }

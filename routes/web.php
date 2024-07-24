@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home.page');
+Route::get('/Nexustalk', [HomeController::class, 'index'])->name('home.page');
 //rota web para logar
 Route::get('/login', [LoginController::class, 'authView'])->name('/login');
 Route::post('/login/auth', [LoginController::class, 'auth'])->name('login/auth');
@@ -16,5 +16,5 @@ Route::get('/registrar', [LoginController::class, 'authRegister'])->name('regist
 Route::post('/registrar/post', [UserController::class, 'store'])->name('register.post.api');
 
 //rota web para logar
-Route::get('/home', [HomeController::class , 'index'])->name('/home.dashboard');
+Route::get('/dashboard', [HomeController::class , 'dashboard'])->name('/dashboard');
 

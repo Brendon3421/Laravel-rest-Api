@@ -38,7 +38,7 @@ class EnderecoRequest extends FormRequest
     public function rules(): array
     {
         $enderecoID = $this->route('endereco');
-    
+
         return [
             'user_id' => [
                 'nullable', // Permite que o campo seja nulo durante a criação
@@ -49,13 +49,14 @@ class EnderecoRequest extends FormRequest
                             ->where('user_id', $value)
                             ->where('id', '!=', $enderecoID)
                             ->exists();
-    
+
                         if ($exists) {
                             $fail('O user_id já está associado a outro endereço.');
                         }
                     }
                 }
             ],
+            'situacao_id' => 'required',
             'name' => 'required|string|max:255',
             'cep' => 'required|numeric',
             'rua' => 'required|string|max:255',
@@ -82,6 +83,7 @@ class EnderecoRequest extends FormRequest
             'complemento.nullable' => 'O campo complemento é opcional.',
             'complemento.string' => 'O campo complemento deve ser uma string.',
             'complemento.max' => 'O campo complemento deve ter no máximo :max caracteres.',
+            'situacao_id.required' => 'O campo situacao e obrigatorio '
         ];
     }
 }

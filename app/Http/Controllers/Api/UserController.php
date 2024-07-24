@@ -23,11 +23,6 @@ class UserController extends Controller
     {
     }
 
-    public function genero()
-    {
-    }
-
-
     public function index(): JsonResponse
     {
         // recuperar os dados do bando pelo Id em ordem decrescente e faz a paginacao de no maximo 3 por pagina 
@@ -86,11 +81,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             // editar
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
+            $user->update($request->validated());
             DB::commit();
             return response()->json([
                 'status' => true,

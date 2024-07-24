@@ -178,7 +178,7 @@
                     alertContainer.appendChild(successAlert);
                     // Redirect after a few seconds
                     setTimeout(() => {
-                        window.location.href = '/home.dashboard'; // Replace with the desired path
+                        window.location.href = '/dashboard'; // Replace with the desired path
                     }, 2000);
                 } else {
                     // Errors - Show error messages

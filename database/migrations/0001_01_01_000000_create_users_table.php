@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         // Criação da tabela 'genero'
         Schema::create('genero', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
         });
-
 
         // Criação da tabela 'users'
         Schema::create('users', function (Blueprint $table) {
@@ -27,13 +27,16 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('genero_id')->nullable()->constrained('genero')->onDelete('set null');
+            $table->foreignId('situacao_id')->default(1)->constrained('situacao')->onDelete('cascade');
+
             $table->rememberToken();
             $table->timestamps();
         });
         //tabela de endereco do usuario
         Schema::create('endereco', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Adiciona a chave estrangeira
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('situacao_id')->default(1)->constrained('situacao')->onDelete('cascade');
             $table->string('name');
             $table->integer('cep');
             $table->string('rua');
@@ -42,8 +45,6 @@ return new class extends Migration
             $table->string('ip_address', 45)->nullable();;
             $table->timestamps();
         });
-
-
 
         // Criação da tabela 'password_reset_tokens'
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -63,14 +64,12 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('endereco');
+        Schema::dropIfExists('genero');
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('genero');
     }
 };
