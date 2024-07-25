@@ -35,6 +35,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
     /**
      * Get the attributes that should be cast.
      *
@@ -46,5 +47,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    protected $attributes = [
+        'situacao_id' => 1, // Valor padrão para situacao_id
+    ];
+    //modal da situacao 
+    public function situacao()
+    {
+        return $this->belongsTo(Situacao::class);
+    }
+    //modal genero
+    public function genero()
+    {
+        return $this->belongsTo(Genero::class);
     }
 }

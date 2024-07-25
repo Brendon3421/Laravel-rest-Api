@@ -5,128 +5,41 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EnderecoRequest;
 use App\Http\Requests\UserRequest;
-use App\Models\Endereco;
 use App\Models\User;
-use Exception;
+use App\Services\UserServices;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
-use Mockery\Expectation;
 
 class UserController extends Controller
 {
+    protected $userServices;
 
-    public $usuario;
-
-    public function __construct()
+    public function __construct(UserServices $userServices)
     {
+        $this->userServices = $userServices;
     }
 
     public function index(): JsonResponse
     {
-        // recuperar os dados do bando pelo Id em ordem decrescente e faz a paginacao de no maximo 3 por pagina 
-        $users = User::orderby('id', 'DESC')->paginate(3);
-        // retorna os usuarios recuperados com uma resposta em JSON
-        return response()->json([
-            'status' => true,
-            'users' => $users,
-        ], 200);
+        return $this->userServices->listarUsuarios();
     }
 
-    // : JsonResponse Tipagem da API
     public function show(User $user): JsonResponse
     {
-        //retorna o o usuario que passar o id na url
-        return response()->json([
-            'status' => true,
-            'user' => $user,
-        ], 200);
+        return $this->userServices->listarUSerEspecifico($user);
     }
-
 
     public function store(UserRequest $request, EnderecoRequest $enderecoRequest): JsonResponse
     {
-        try {
-            DB::beginTransaction();
-            //cria o usuario
-            $user = User::create($request->validated());
-
-            //cria o endereco
-            $enderecoData = $enderecoRequest->validated();
-            $enderecoData['user_id'] = $user->id;
-            $endereco = Endereco::create($enderecoData);
-
-            DB::commit();
-            return response()->json([
-                'status' => true,
-                'user' => $user,
-                'Endereco' => $endereco,
-                'message' => 'Usuário cadastrado com sucesso'
-            ], 201);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Erro ao cadastrar usuário',
-                'error' =>  $e->getMessage()
-            ], 400);
-        }
+        return $this->userServices->criarUsuario($request, $enderecoRequest);
     }
-
 
     public function update(UserRequest $request, User $user): JsonResponse
     {
-        // iniciar a transacao
-        DB::beginTransaction();
-        try {
-            // editar
-            $user->update($request->validated());
-            DB::commit();
-            return response()->json([
-                'status' => true,
-                'user' => $user,
-                'message' => "Usuario editado com sucesso"
-            ]);
-        } catch (Exception $e) {
-            // Operacao de erro 
-            DB::rollBack();
-            // deve retorna uma mensagem de erro status 400     
-            return response()->json([
-                'status' => false,
-                "message" => "Usuario nao editado"
-            ], 400);
-        }
-        return response()->json([
-            'status' => true,
-            'user' => $user,
-            "message" => "Editado com sucesso"
-        ], 200);
+        return $this->userServices->editarUsuario($user, $request);
     }
 
     public function destroy(User $user): JsonResponse
     {
-        DB::beginTransaction();
-
-        try {
-            // Apagar o usuário do banco de dados
-            $user->delete();
-            // Confirmar a transação
-            DB::commit();
-            // Retorna se apagou com sucesso
-            return response()->json([
-                'status' => true,
-                'message' => "Usuário excluído com sucesso"
-            ], 200);
-        } catch (Exception $e) {
-            // Reverter a transação em caso de erro
-            DB::rollBack();
-            // Retorna a mensagem de erro
-            return response()->json([
-                'status' => false,
-                'message' => "Ocorreu um erro durante o processo de exclusão",
-                'error' => $e->getMessage() // Opcional: Adicionar a mensagem de erro para depuração
-            ], 400);
-        }
+        return $this->userServices->destroy($user);
     }
 }

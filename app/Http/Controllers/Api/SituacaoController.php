@@ -115,4 +115,8 @@ class SituacaoController extends Controller
             ], 400);
         }
     }
+
+
+
+    
 }
