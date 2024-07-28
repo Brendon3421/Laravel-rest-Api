@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\GeneroController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/Nexustalk', [HomeController::class, 'index'])->name('home.page');
@@ -18,3 +20,17 @@ Route::post('/registrar/post', [UserController::class, 'store'])->name('register
 //rota web para logar
 Route::get('/dashboard', [HomeController::class , 'dashboard'])->name('/dashboard');
 
+Route::get('/ACL', function () {
+
+    Auth::loginUsingId(3);
+    $users = User::all();
+    return view('Teste' ,[
+        'usuarios'=> $users,
+    ]);
+
+});
+Route::get('/user/create', function () {
+
+
+    print_r("deu certo so funfa com a permisao");
+})->middleware('can:create_user');

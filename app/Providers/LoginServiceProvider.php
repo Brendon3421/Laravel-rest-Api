@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Services\LoginServices;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class LoginServiceProvider extends ServiceProvider
@@ -12,8 +14,8 @@ class LoginServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(LoginServices::class, function($app){
-           return  new LoginServices();
+        $this->app->singleton(LoginServices::class, function ($app) {
+            return  new LoginServices();
         });
     }
 
@@ -22,6 +24,10 @@ class LoginServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::before(function (User $user, $ability) {
+            if ($user->allAbilities()->contains($ability)) {
+                return true;
+            }
+        });
     }
 }
