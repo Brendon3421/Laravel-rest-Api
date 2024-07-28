@@ -23,7 +23,6 @@ return new class extends Migration
             $table->integer('expiration');
         });
     }
-
     /**
      * Reverse the migrations.
      */

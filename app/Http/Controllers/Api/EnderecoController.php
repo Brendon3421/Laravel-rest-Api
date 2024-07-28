@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EnderecoRequest;
 use App\Models\Endereco;
 use App\Services\EnderecoServices;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class EnderecoController extends Controller
 {
@@ -23,7 +20,7 @@ class EnderecoController extends Controller
     //funcao de listar dos os endereco em ordem descrescente
     public function index(): JsonResponse
     {
-        return $this->enderecoServices->listarEdendereco();
+        return $this->enderecoServices->listarEndereco();
     }
     //funcao de mostrar endereco com ID especifico 
     public function show(Endereco $endereco): JsonResponse

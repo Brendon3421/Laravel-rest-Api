@@ -32,7 +32,7 @@ class UserRequest extends FormRequest
             'email' => 'required|email|unique:users,email,' . ($userID ? $userID->id : 'NULL'),
             'password' => $userID ? 'nullable|min:6' : 'required|min:6', // senha não é obrigatória na atualização
             'genero_id' => 'required|exists:genero,id',
-            'situacao_id' => 'required|exists:situacao,id'
+            'situacao_id' => 'exists:situacao,id'
         ];
     }
 
@@ -47,7 +47,6 @@ class UserRequest extends FormRequest
             'password.min' => "O mínimo é 6 caracteres.",
             'genero_id.required' => "O campo de genero é obrigatório.",
             'genero_id.exists' => "O gênero selecionado não existe.",
-            'situacao_id.required' => "O campo de situação é obrigatório.",
             'situacao_id.exists' => "A situação selecionada não existe."
         ];
     }

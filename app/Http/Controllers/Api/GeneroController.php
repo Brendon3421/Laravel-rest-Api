@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GeneroRequest;
 use App\Models\Genero;
 use App\Services\GeneroServices;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class GeneroController extends Controller
 {

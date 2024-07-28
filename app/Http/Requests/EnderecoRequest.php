@@ -56,7 +56,7 @@ class EnderecoRequest extends FormRequest
                     }
                 }
             ],
-            'situacao_id' => 'required',
+            'situacao_id' => 'nullable|exists:situacao,id',
             'name' => 'required|string|max:255',
             'cep' => 'required|numeric',
             'rua' => 'required|string|max:255',
@@ -83,7 +83,7 @@ class EnderecoRequest extends FormRequest
             'complemento.nullable' => 'O campo complemento é opcional.',
             'complemento.string' => 'O campo complemento deve ser uma string.',
             'complemento.max' => 'O campo complemento deve ter no máximo :max caracteres.',
-            'situacao_id.required' => 'O campo situacao e obrigatorio '
+            'situacao_id.required' => 'O campo situacao e obrigatorio'
         ];
     }
 }

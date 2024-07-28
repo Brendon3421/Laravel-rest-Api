@@ -1,10 +1,10 @@
 <?php
 
-
 namespace App\Services;
 
+use App\DTOs\GeneroDTO;
 use App\Http\Requests\GeneroRequest;
-use App\Models\Genero as modelGenero;
+use App\Models\Genero;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -12,41 +12,47 @@ class GeneroServices
 {
     public function listarGenero()
     {
-        $genero = modelGenero::orderby('id', 'DESC')->paginate(3);
-        // retorna os usuarios recuperados com uma resposta em JSON
+        $generos = Genero::orderby('id', 'DESC')->paginate(3);
+        $generoDTOs = GeneroDTO::fromCollection(collect($generos->items()));
+
         return response()->json([
             'status' => true,
-            'genero' => $genero,
+            'generos' => $generoDTOs,
+            'message' => 'Generos listados com sucesso'
         ], 200);
     }
-    public function listarGeneroId(modelGenero $genero)
+    public function listarGeneroId(Genero $genero)
     {
         try {
-            return response()->json(
-                [
-                    'status' => true,
-                    'name' => $genero->name,
-                    'message' => 'Usuario listado com sucesso'
-                ],
-                200
-            );
+            $generoDTO = GeneroDTO::fromModel($genero);
+            return response()->json([
+                'status' => true,
+                'genero' => $generoDTO,
+                'message' => 'Gênero listado com sucesso'
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,
-                'Error' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 400);
         }
     }
+
     public function criarGenero(GeneroRequest $request)
     {
         try {
-            $genero = modelGenero::create($request->validated());
+            DB::beginTransaction();
+            $genero = Genero::create($request->validated());
+            DB::commit();
+            $generoDTO = GeneroDTO::fromModel($genero);
+
             return response()->json([
                 'status' => true,
-                'genero' => $genero,
+                'genero' => $generoDTO,
                 'message' => 'Gênero criado com sucesso',
             ], 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao criar gênero',
@@ -54,36 +60,40 @@ class GeneroServices
             ], 400);
         }
     }
-    public function editarGeneroid(modelGenero $genero, GeneroRequest $request)
+
+    public function editarGeneroid(Genero $genero, GeneroRequest $request)
     {
         try {
-            // Atualiza o gênero com sucesso
             DB::beginTransaction();
             $genero->update($request->validated());
             DB::commit();
+            $generoDTO = GeneroDTO::fromModel($genero);
+
             return response()->json([
                 'status' => true,
-                'genero' => $genero,
-                'message' => "Genero editado com sucesso",
+                'genero' => $generoDTO,
+                'message' => "Gênero editado com sucesso",
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
-                'message' => "Nao foi possivel editar",
+                'message' => "Não foi possível editar o gênero",
                 'error' => $e->getMessage()
             ], 400);
         }
     }
-    public function excluirGenero(modelGenero $genero)
+
+    public function excluirGenero(Genero $genero)
     {
         try {
-            //pegar o genero que sera excluido
+            DB::beginTransaction();
             $genero->delete();
+            DB::commit();
+
             return response()->json([
                 'status' => true,
-                'Nome do genero' => $genero->name,
-                'message' => "genero Excluido com sucesso"
+                'message' => "Gênero excluído com sucesso"
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();

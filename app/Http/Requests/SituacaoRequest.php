@@ -38,7 +38,7 @@ class SituacaoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255|unique:situacao',
+            'name' => 'required|max:255|unique:situacao|string',
         ];
     }
 
@@ -52,7 +52,8 @@ class SituacaoRequest extends FormRequest
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'name.max' => 'O máximo de caracteres são :max.',
-            'name.unique' => 'Esse campo é obrigatório.',
+            'name.unique' => 'Esse nome ja esta em uso.',
+            'name.string' => 'Esse campo deve ser um texto.',
         ];
     }
 }

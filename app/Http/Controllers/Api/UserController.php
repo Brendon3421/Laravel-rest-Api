@@ -33,9 +33,9 @@ class UserController extends Controller
         return $this->userServices->criarUsuario($request, $enderecoRequest);
     }
 
-    public function update(UserRequest $request, User $user): JsonResponse
+    public function update(UserRequest $request, User $user,  EnderecoRequest $enderecoRequest) : JsonResponse
     {
-        return $this->userServices->editarUsuario($user, $request);
+        return $this->userServices->editarUsuario($user, $request, $enderecoRequest);
     }
 
     public function destroy(User $user): JsonResponse

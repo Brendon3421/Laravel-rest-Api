@@ -10,7 +10,7 @@ class Endereco extends Model
     use HasFactory;
 
     //referencia da tabela que esta sendo utilizada
-    protected $table = 'endereco';
+    protected $table = 'endereco';  
 
     // Se você não quiser que o modelo use os timestamps, defina como false
     public $timestamps = true;
@@ -35,4 +35,8 @@ class Endereco extends Model
     {
         return $this->belongsTo(Situacao::class);
     }
+
+
+    
 }
+
