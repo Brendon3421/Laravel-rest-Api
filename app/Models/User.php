@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function abilities(): BelongsToMany
     {
-        return $this->belongsToMany(Ability::class);
+        return $this->belongsToMany(abilities::class);
     }
 
     public function roleAbilities()

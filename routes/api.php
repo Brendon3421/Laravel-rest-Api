@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AbilitiesController;
 use App\Http\Controllers\Api\EnderecoController;
 use App\Http\Controllers\Api\GeneroController;
 use App\Http\Controllers\Api\LoginController;
@@ -15,12 +16,18 @@ Route::get('/situacao/{situacao}', [SituacaoController::class, 'show']); //get h
 Route::post('/situacao', [SituacaoController::class, 'store']);  //get http://127.0.0.1:8000/api/situacao/ , cria uma situacao 
 Route::put('/situacao/{situacao}', [SituacaoController::class, 'update']);  //get http://127.0.0.1:8000/api/situacao/{sistuacao} ,  edita um endereco solicitado 
 Route::delete('/situacao/{situacao}', [SituacaoController::class, 'destroy']); //delete  http://127.0.0.1:8000/api/users/1 , deletar  usuario especifico
-//rotas
+//rotas Usuario
 Route::get('/users/{user}', [UserController::class, 'show']); //get http://127.0.0.1:8000/api/users/1 , exibe conteudo de um usuario especifico
 Route::post('/users', [UserController::class, 'store']); //post - http://127.0.0.1:8000/api/users criar usuario 
 Route::put('/users/{user}', [UserController::class, 'update']); //put  http://127.0.0.1:8000/api/users/1 , edita conteudo de um usuario especifico
 Route::delete('/users/{user}', [UserController::class, 'destroy']); //delete  http://127.0.0.1:8000/api/users/1 , deletar  usuario especifico
 route::post('/login', [LoginController::class, 'auth'])->name('login'); // http://127.0.0.1:8000/api/login/{information users} , rota publica de login do usuario ao sistema
+//rotas ACL Nao funcionou nenhum
+Route::get('/abilities', [AbilitiesController::class, 'index']);
+Route::get('/abilities/{abilities}', [AbilitiesController::class, 'show']);
+Route::post('/abilities', [AbilitiesController::class, 'store']);
+Route::put('/abilities/{abilities}', [AbilitiesController::class, 'update']);
+Route::delete('/abilities/{abilities}', [AbilitiesController::class, 'destroy']);
 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 // rotas que sao necessarios os tokens de autenticacao 
