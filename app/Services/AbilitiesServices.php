@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Services;
 
 use App\DTOs\AbilitiesDTO;
 use App\Http\Requests\AbilitiesRequest;
 use App\Models\Abilities;
-use App\Models\Ability;
-use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AbilitiesServices
 {
-    public function listarAbilities()
+    public function listarAbilities(): JsonResponse
     {
         try {
             $abilities = Abilities::orderBy('id', 'DESC')->paginate(3);
@@ -34,14 +33,14 @@ class AbilitiesServices
         }
     }
 
-    public function listarAbilitiesId(Abilities $ability)
+    public function listarAbilitiesId(Abilities $ability): JsonResponse
     {
         try {
-            $abilityDTO = AbilitiesDTO::fromModel($ability);
+            $abilitiesDTO = AbilitiesDTO::fromModel($ability);
 
             return response()->json([
                 'status' => true,
-                'Habilidade' => $abilityDTO,
+                'Habilidade' => $abilitiesDTO,
                 'message' => 'Habilidade listada com sucesso'
             ], 200);
         } catch (Exception $e) {
@@ -53,15 +52,15 @@ class AbilitiesServices
         }
     }
 
-    public function criarAbilities(AbilitiesRequest $request)
+    public function criarAbilities(AbilitiesRequest $request): JsonResponse
     {
         try {
-
-            $ability = Abilities::create($request);
+            $ability = Abilities::create($request->validated());
+            $abilitiesDTO = AbilitiesDTO::makefromModel($ability);
 
             return response()->json([
                 'status' => true,
-                'Habilidade' => AbilitiesDTO::fromModel($ability),
+                'Habilidade' => $abilitiesDTO,
                 'message' => 'Habilidade criada com sucesso'
             ], 201);
         } catch (Exception $e) {
@@ -73,18 +72,16 @@ class AbilitiesServices
         }
     }
 
-    public function editarAbilitiesId(Request $request, Abilities $ability)
+    public function editarAbilitiesId(AbilitiesRequest $request, Abilities $ability): JsonResponse
     {
         try {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-            ]);
+           $ability->update($request->validated());
+            $abilitiesDTO = AbilitiesDTO::fromModel($ability);
 
-            $ability->update($validatedData);
 
             return response()->json([
                 'status' => true,
-                'Habilidade' => AbilitiesDTO::fromModel($ability),
+                'Habilidade' => $abilitiesDTO,
                 'message' => 'Habilidade atualizada com sucesso'
             ], 200);
         } catch (Exception $e) {
@@ -96,13 +93,14 @@ class AbilitiesServices
         }
     }
 
-    public function excluirAbilities(Abilities $ability)
+    public function excluirAbilities(Abilities $ability): JsonResponse
     {
         try {
             $ability->delete();
 
             return response()->json([
                 'status' => true,
+                'Habilidade Excluida' => $ability,
                 'message' => 'Habilidade excluída com sucesso'
             ], 200);
         } catch (Exception $e) {

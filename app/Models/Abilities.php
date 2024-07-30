@@ -16,7 +16,6 @@ class Abilities extends Model
         'name',
     ];
 
-    public $timestamps = true;
 
 
     public function roles()

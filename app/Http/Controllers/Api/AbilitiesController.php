@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AbilitiesRequest;
 use App\Models\Abilities;
-use App\Models\Ability;
 use App\Services\AbilitiesServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class AbilitiesController extends Controller
         return $this->abilitiesService->listarAbilitiesId($ability);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(AbilitiesRequest $request): JsonResponse
     {
         return $this->abilitiesService->criarAbilities($request);
     }

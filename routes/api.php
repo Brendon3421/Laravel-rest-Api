@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AbilitiesController;
 use App\Http\Controllers\Api\EnderecoController;
 use App\Http\Controllers\Api\GeneroController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SituacaoController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,15 +23,22 @@ Route::post('/users', [UserController::class, 'store']); //post - http://127.0.0
 Route::put('/users/{user}', [UserController::class, 'update']); //put  http://127.0.0.1:8000/api/users/1 , edita conteudo de um usuario especifico
 Route::delete('/users/{user}', [UserController::class, 'destroy']); //delete  http://127.0.0.1:8000/api/users/1 , deletar  usuario especifico
 route::post('/login', [LoginController::class, 'auth'])->name('login'); // http://127.0.0.1:8000/api/login/{information users} , rota publica de login do usuario ao sistema
-//rotas ACL Nao funcionou nenhum
-Route::get('/abilities', [AbilitiesController::class, 'index']);
-Route::get('/abilities/{abilities}', [AbilitiesController::class, 'show']);
-Route::post('/abilities', [AbilitiesController::class, 'store']);
-Route::put('/abilities/{abilities}', [AbilitiesController::class, 'update']);
-Route::delete('/abilities/{abilities}', [AbilitiesController::class, 'destroy']);
 
-Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
+//rotas ACL Habilidades
+Route::get('/abilities', [AbilitiesController::class, 'index']);
+Route::get('/abilities/{ability}', [AbilitiesController::class, 'show']);
+Route::post('/abilities', [AbilitiesController::class, 'store']);
+Route::put('/abilities/{ability}', [AbilitiesController::class, 'update']);
+Route::delete('/abilities/{ability}', [AbilitiesController::class, 'destroy']);
+//rotas ACL Regras
+Route::get('roles',[RolesController::class ,'index']);
+Route::get('roles/{roles}',[RolesController::class ,'show']);
+
+
+
+
 // rotas que sao necessarios os tokens de autenticacao 
+Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/users', [UserController::class, 'index']); //get http://127.0.0.1:8000/api/users?page=1 exibe conteudo de  todos os usuarios 
 

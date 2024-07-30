@@ -10,10 +10,18 @@ class Role extends Model
 {
     use HasFactory;
 
+    protected $table = 'roles';  
+
+    protected $fillable = [
+        'name',
+    ];
+
+    public $timestamps = true;
+
     public function abilities(): BelongsToMany
 
     {
-      return  $this->belongsToMany(Ability::class);
+      return  $this->belongsToMany(Abilities::class);
     }
 
     public function users(): BelongsToMany

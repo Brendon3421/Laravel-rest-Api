@@ -1,14 +1,11 @@
 <?php
-
 namespace App\DTOs;
 
-use App\Models\abilities;
+use App\Models\Abilities;
 use Illuminate\Support\Collection;
 
 class AbilitiesDTO
 {
-
-
     public $id;
     public $name;
     public $created_at;
@@ -20,7 +17,7 @@ class AbilitiesDTO
         $this->created_at = $created_at;
     }
 
-    public static function fromModel(abilities $ability): self
+    public static function fromModel(Abilities $ability): self
     {
         return new self(
             $ability->id,
@@ -28,6 +25,17 @@ class AbilitiesDTO
             $ability->created_at
         );
     }
+
+
+    public static function makefromModel(Abilities $ability): self
+    {
+        return new self(
+            $ability->id,
+            $ability->name,
+            now()
+        );
+    }
+
 
     public static function fromCollection(Collection $abilities): Collection
     {
