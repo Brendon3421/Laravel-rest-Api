@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\DTOs\RolesDTO;
+use App\Http\Requests\RolesRequest;
 use App\Models\Role;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class RolesServices
 {
@@ -50,13 +52,63 @@ class RolesServices
             ]);
         }
     }
-    public function criarRoleUser()
+    public function criarRoleUser(RolesRequest $request)
     {
+        try {
+            DB::beginTransaction();
+            $roles = Role::create($request->validated());
+            DB::commit();
+            $rolesDTO = RolesDTO::makeFromModel($request);
+
+            return response()->json([
+                'status' => true,
+                'Regra criada' => $rolesDTO,
+                'message' => 'Regra criado com sucesso'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'Regra criada' => $e->getMessage(),
+                'message' => 'falha ao criar regra'
+            ], 400);
+        }
     }
-    public function editarRoleUser()
+    public function editarRoleUser(Role $roles, RolesRequest $request)
     {
+        try {
+            DB::beginTransaction();
+            $roles->update($request->validated());
+            DB::commit();
+            $rolesDTO = RolesDTO::fromModel($roles);
+            return response()->json([
+                'status' => true,
+                'Regra editada' => $rolesDTO,
+                'message' => 'Regra Edita com sucesso',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Falha ao editar regra',
+            ], 400);
+        }
     }
-    public function excluirRoleUser()
+    public function excluirRoleUser(Role $roles)
     {
+        try {
+            DB::beginTransaction();
+            $roles->delete();
+            return response()->json([
+                'status' => true,
+                'Regra editada' => $roles,
+                'message' => 'Regra deletada com sucesso',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Falha ao excluir regra',
+            ], 400);
+        }
+        }
     }
-}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RolesRequest;
 use App\Models\Role;
 use App\Services\RolesServices;
 use Illuminate\Http\JsonResponse;
@@ -27,15 +28,18 @@ class RolesController extends Controller
         return $this->rolesServices->listarRoleUserId($roles);
     }
 
-    // // public function store(AbilitiesRequest $request)
-    // {
-    // }
+    public function store(RolesRequest $request): JsonResponse
+    {
+        return $this->rolesServices->criarRoleUser($request);
+    }
 
-    // // public function update(Request $request, Abilities $ability)
-    // {
-    // }
+    public function update(RolesRequest $request, Role $roles)
+    {
+        return $this->rolesServices->editarRoleUser($roles, $request);
+    }
 
-    // // public function destroy(Abilities $ability)
-    // {
-    // }
+    public function destroy(Role $roles)
+    {
+        return $this->rolesServices->excluirRoleUser($roles);
+    }
 }

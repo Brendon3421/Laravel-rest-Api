@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AbilitiesServiceProvider::class,
+    App\Providers\AbilityUserProvider::class,
     App\Providers\AppServiceProvider::class,
     App\Providers\EnderecoServiceProvider::class,
     App\Providers\GeneroServiceProvider::class,
