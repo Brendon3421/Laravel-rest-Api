@@ -7,6 +7,7 @@ return [
     App\Providers\EnderecoServiceProvider::class,
     App\Providers\GeneroServiceProvider::class,
     App\Providers\LoginServiceProvider::class,
+    App\Providers\RoleUserServiceProvider::class,
     App\Providers\RolesServiceProvider::class,
     App\Providers\SituacaoServiceProvider::class,
     App\Providers\UserServiceProvider::class,

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\EnderecoController;
 use App\Http\Controllers\Api\GeneroController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RolesController;
+use App\Http\Controllers\Api\RoleUserController;
 use App\Http\Controllers\Api\SituacaoController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ route::post('/login', [LoginController::class, 'auth'])->name('login'); // http:
 
 //rotas ACL Habilidades
 Route::get('/abilities', [AbilitiesController::class, 'index']); // http://127.0.0.1:8000/api/abilities/ , rota para listar habilidades
-Route::get('/abilities/{ability}', [AbilitiesController::class, 'show']); // http://127.0.0.1:8000/api/abilities/{abilities} , rota de listar habilidade especifica
+Route::get('/abilities/{ability}', [AbilitiesController::class, 'show']); // htt[=[=p://127.0.0.1:8000/api/abilities/{abilities} , rota de listar habilidade especifica
 Route::post('/abilities', [AbilitiesController::class, 'store']); // http://127.0.0.1:8000/api/abilities/, rota criar habilidade
 Route::put('/abilities/{ability}', [AbilitiesController::class, 'update']); // http://127.0.0.1:8000/api/abilities/{abilities}, rota editar habilidade especifica
 Route::delete('/abilities/{ability}', [AbilitiesController::class, 'destroy']); // http://127.0.0.1:8000/api/abilities/{ user0s} , rota para excluir habilidade
@@ -40,11 +41,15 @@ Route::delete('/roles/{roles}', [RolesController::class, 'destroy']); // http://
 //rotas ACL Habilidades de usuario
 Route::get('/abilitiesUser', [AbilityUserController::class, 'index']); // http://127.0.0.1:8000/api/abilities-users/ , rota listar habilidades de usuario que eles pertecen 
 Route::get('/abilitiesUser/{abilityUser}', [AbilityUserController::class, 'show']); // http://127.0.0.1:8000/api/abilities-user/{abilities-users} , rota listar habilidades de usuario especifico que eles pertecen 
-Route::post('/abilitiesUser', [AbilityUserController::class, 'store']);
-Route::put('/abilitiesUser/{abilityUser}', [AbilityUserController::class, 'update']);
-Route::delete('/abilitiesUser/{abilityUser}', [AbilityUserController::class, 'destroy']);
-
-
+Route::post('/abilitiesUser', [AbilityUserController::class, 'store']); // http://127.0.0.1:8000/api/abilities-users/ rotas para adicionar habilidades de usuarios
+Route::put('/abilitiesUser/{abilityUser}', [AbilityUserController::class, 'update']); // http://127.0.0.1:8000/api/abilities-users/{abilities-users} rota para editar habilidades do usuario
+Route::delete('/abilitiesUser/{abilityUser}', [AbilityUserController::class, 'destroy']); // http://127.0.0.1:8000/api/abilities-users/ {abilities-users}  rota para excluir usuario
+//rotas ACL Regras de usuario
+Route::get('/rolesUsers', [RoleUserController::class, 'index']); // http://127.0.0.1:8000/api/rolesUsers retorna lista dos usuarios com sua regra
+Route::get('/rolesUsers/{rolesUser}', [RoleUserController::class, 'show']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} retorna  usuarios especifico com sua regra
+Route::post('/rolesUsers', [RoleUserController::class, 'store']); // http://127.0.0.1:8000/api/rolesUsers cria regra a um usuario especifico
+Route::put('/rolesUsers/{rolesUser}', [RoleUserController::class, 'update']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} editar a regra de um usuario
+Route::delete('/rolesUsers/{rolesUser}', [RoleUserController::class, 'destroy']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} exclui regra de um usuario
 
 // rotas que sao necessarios os tokens de autenticacao 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
