@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AbilitiesController;
+use App\Http\Controllers\api\abilityRoleController;
 use App\Http\Controllers\Api\AbilityUserController;
 use App\Http\Controllers\Api\EnderecoController;
 use App\Http\Controllers\Api\GeneroController;
@@ -10,9 +11,6 @@ use App\Http\Controllers\Api\RoleUserController;
 use App\Http\Controllers\Api\SituacaoController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
-
-
-
 //rotas situacao
 Route::get('/situacao', [SituacaoController::class, 'index']); //get http://127.0.0.1:8000/api/situacao/ , exibe conteudo das situacao 
 Route::get('/situacao/{situacao}', [SituacaoController::class, 'show']); //get http://127.0.0.1:8000/api/situacao/{situacao}, exibe conteudo da situacao especifico do numero da url 
@@ -50,6 +48,13 @@ Route::get('/rolesUsers/{rolesUser}', [RoleUserController::class, 'show']); // h
 Route::post('/rolesUsers', [RoleUserController::class, 'store']); // http://127.0.0.1:8000/api/rolesUsers cria regra a um usuario especifico
 Route::put('/rolesUsers/{rolesUser}', [RoleUserController::class, 'update']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} editar a regra de um usuario
 Route::delete('/rolesUsers/{rolesUser}', [RoleUserController::class, 'destroy']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} exclui regra de um usuario
+//rotas ACL Habilidades da regra de usuario
+Route::get('/abilitiyRole', [abilityRoleController::class, 'index']);// http://127.0.0.1:8000/api/abilitiyRole retorna lista da regra e suas habilidades
+Route::get('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'show']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} retorna regra e suas habilidades
+Route::post('/abilitiyRole', [abilityRoleController::class, 'store']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para adicionar uma habilidade a regra
+Route::put('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'update']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
+Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'destroy']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
+
 
 // rotas que sao necessarios os tokens de autenticacao 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario

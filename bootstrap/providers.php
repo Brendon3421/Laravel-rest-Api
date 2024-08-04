@@ -11,4 +11,5 @@ return [
     App\Providers\RolesServiceProvider::class,
     App\Providers\SituacaoServiceProvider::class,
     App\Providers\UserServiceProvider::class,
+    App\Providers\abilityRoleServiceProvider::class,
 ];
