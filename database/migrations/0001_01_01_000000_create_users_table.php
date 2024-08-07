@@ -28,13 +28,14 @@ return new class extends Migration
             $table->string('password');
             $table->foreignId('genero_id')->nullable()->constrained('genero')->onDelete('set null');
             $table->foreignId('situacao_id')->default(1)->constrained('situacao')->onDelete('cascade');
-
+            $table->foreignId('contato_id')->constrained('contatos')->onDelete('cascade');
+            $table->foreignId('empresa_id')->constrained('empresas')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
         //tabela de endereco do usuario
         Schema::create('endereco', function (Blueprint $table) {
-            $table->id();
+            $table->id()->primary();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('situacao_id')->default(1)->constrained('situacao')->onDelete('cascade');
             $table->string('name');

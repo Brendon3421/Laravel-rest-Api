@@ -47,7 +47,8 @@ class EnderecoDTO
             $request->complemento,
             $request->ip(),
             now(),
-            now()
+            $request->updated_at,
+
         );
     }
 
