@@ -21,20 +21,25 @@ class Empresas extends Model
         "razao_social",
         "inscricao_estadual",
         "fundacao",
+        "user_id",
         "situacao_id",
         "endereco_id",
         "contato_id"
     ];
 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
     public function situacao()
     {
-        return $this->belongsTo(situacao::class);
+        return $this->belongsTo(Situacao::class, 'situacao_id');
     }
 
     public function endereco()
     {
         return $this->belongsTo(endereco::class);
     }
-
-
 }

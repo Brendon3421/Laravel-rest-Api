@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('sub_empresas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('empresa_id')->nullable(false)->constrained('empresas')->onDelete('cascade');
-            $table->foreignId('situacao_id')->default(1)->constrained('situacao')->onDelete('cascade');
-            $table->string('name',255);
+            $table->string('name', 255);
             $table->integer('cnpj');
-            $table->string('razao_social',255);
-            $table->string('inscricao_estadual',255);
+            $table->string('razao_social', 255);
+            $table->string('inscricao_estadual', 255);
             $table->date('fundacao');
+                        //rodar php artisan migrate --path=/database/migrations/Fk para puxar as Fk
             $table->timestamps();
         });
     }

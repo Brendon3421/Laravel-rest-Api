@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('razao_social', 255);
             $table->string('inscricao_estadual', 255);
             $table->date('fundacao');
-            $table->foreignId('situacao_id')->default(1)->constrained('situacao')->onDelete('cascade');
-            $table->foreignId('endereco_id')->constrained('endereco'); // Supondo que a tabela de endereço é 'enderecos'
-            $table->foreignId('contato_id')->nullable()->constrained('contatos'); // Corrigido para 'contato_id'
+            $table->foreignId('user_id')->nullable(); // FK será adicionada em uma migration separada
+            $table->foreignId('situacao_id')->default(1); // FK será adicionada em uma migration separada
+            $table->foreignId('endereco_id')->nullable(); // FK será adicionada em uma migration separada
             $table->timestamps();
         });
     }

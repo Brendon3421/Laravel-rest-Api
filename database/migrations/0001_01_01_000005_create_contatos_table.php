@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_empresas_users', function (Blueprint $table) {
+        Schema::create('contatos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users_id')->nullable(false)->constrained('users')->onDelete('cascade');
-            $table->foreignId('subemEmpresas_id')->nullable(false)->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('empresa_id')->nullable();
+            $table->string('email', 255);
+            $table->string('celular', 255);
+            $table->string('telefone_fixo', 255);
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_empresas_users');
+        Schema::dropIfExists('contatos');
     }
 };

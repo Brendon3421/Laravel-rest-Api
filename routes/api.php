@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AbilitiesController;
 use App\Http\Controllers\api\abilityRoleController;
 use App\Http\Controllers\Api\AbilityUserController;
+use App\Http\Controllers\Api\EmpresasController;
 use App\Http\Controllers\Api\EnderecoController;
 use App\Http\Controllers\Api\GeneroController;
 use App\Http\Controllers\Api\LoginController;
@@ -54,6 +55,9 @@ Route::get('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'show']
 Route::post('/abilitiyRole', [abilityRoleController::class, 'store']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para adicionar uma habilidade a regra
 Route::put('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'update']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
 Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'destroy']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
+//route Empresas 
+Route::get('/empresas', [EmpresasController::class,'index']);// http://127.0.0.1:8000/api/empresas listar empresas
+Route::get('/empresas/{empresas}', [EmpresasController::class,'show']);// http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
 
 
 // rotas que sao necessarios os tokens de autenticacao 
