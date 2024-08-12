@@ -1,5 +1,4 @@
-<?php
-
+/*
 namespace App\Services;
 
 use App\DTOs\EnderecoDTO;
@@ -139,4 +138,5 @@ class EnderecoServices
             ], 400);
         }
     }
-}
+} 
+// 

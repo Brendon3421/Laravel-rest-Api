@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AbilitiesController;
 use App\Http\Controllers\api\abilityRoleController;
 use App\Http\Controllers\Api\AbilityUserController;
+use App\Http\Controllers\Api\ContatosController;
 use App\Http\Controllers\Api\EmpresasController;
 use App\Http\Controllers\Api\EnderecoController;
 use App\Http\Controllers\Api\GeneroController;
@@ -58,28 +59,31 @@ Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'des
 //route Empresas 
 Route::get('/empresas', [EmpresasController::class,'index']);// http://127.0.0.1:8000/api/empresas listar empresas
 Route::get('/empresas/{empresas}', [EmpresasController::class,'show']);// http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
-
+// Crud COntatos
+Route::get('/contatos',[ContatosController::class, 'index']);
+Route::get('/contatos/{contatos}',[ContatosController::class, 'show']);
 
 // rotas que sao necessarios os tokens de autenticacao 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/users', [UserController::class, 'index']); //get http://127.0.0.1:8000/api/users?page=1 exibe conteudo de  todos os usuarios 
-
+    
     //rotas endereco
     Route::get('/endereco', [EnderecoController::class, 'index']); //get http://127.0.0.1:8000/api/endereco/1 Exibe todos os endereco 
     Route::get('/endereco/{endereco}', [EnderecoController::class, 'show']); //get http://127.0.0.1:8000/api/endereco/{endereco} exibe endereco do Id solicitado
     Route::post('/endereco', [EnderecoController::class, 'store']); //get http://127.0.0.1:8000/api/endereco/ Cria um endereco
     Route::put('/endereco/{endereco}', [EnderecoController::class, 'update']); //get http://127.0.0.1:8000/api/endereco/{{endereco}} edita um endereco solicitado 
     Route::delete('/endereco/{endereco}', [EnderecoController::class, 'destroy']); //get http://127.0.0.1:8000/api/endereco/{{endereco}} Exclui um endereco solicitado
-
+    
     //rotas do genero
     Route::get('/genero', [GeneroController::class, 'index'])->name('genero'); //get http://127.0.0.1:8000/api/genero/ , exibe conteudo dos generos cadastrados
     Route::post('/genero', [GeneroController::class, 'store']); //post http://127.0.0.1:8000/api/genero/ , cria um genero
     Route::put('/genero/{genero}', [GeneroController::class, 'update']); //post http://127.0.0.1:8000/api/genero/{genero} edit
     Route::get('/genero/{genero}', [GeneroController::class, 'show']); //get http://127.0.0.1:8000/api/genero/{genero} puxa genero com o id solicitado
     Route::delete('/genero/{genero}', [GeneroController::class, 'destroy']); //get http://127.0.0.1:8000/api/genero/{genero} puxa genero com o id solicitado
-
-
-
-
+    //contatos
+    Route::post('/contatos',[ContatosController::class, 'store']);
+    
+    
+    
 });

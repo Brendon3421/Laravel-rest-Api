@@ -19,12 +19,14 @@ class UserSeeder extends Seeder
     if (!User::where('email', 'brendon@cooperoestesc.com.br')->first()) {
       User::create([
         'name' => 'Brendon',
-        'email' => 'brendon@cooperostesc.com.br',
+        'email' => 'brendon@cooperoestesc.com.br',
+        'email_verified_at' => now(), // Define a data de verificação do e-mail como a data atual
         'password' => Hash::make('terra02', ['rounds' => 12]),
         'genero_id' => 2,
         'situacao_id' => 1,
-        'contato_id' => 1 ,// ou forneça um ID válido se necessário
-        'empresa_id' => 1
+        'remember_token' => Str::random(10), // Cria um token aleatório de 10 caracteres
+        'created_at' => now(),
+        'updated_at' => now(),
       ]);
     }
   }

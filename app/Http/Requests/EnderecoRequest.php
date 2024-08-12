@@ -11,11 +11,11 @@ class EnderecoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     */    public function authorize(): bool
+     */
+    public function authorize(): bool
     {
         return true;
     }
-
 
     public function failedValidation(Validator $validator)
     {
@@ -33,8 +33,6 @@ class EnderecoRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
-    //chatgpt que fez
     public function rules(): array
     {
         $enderecoID = $this->route('endereco');
@@ -68,7 +66,6 @@ class EnderecoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => 'O campo user_id é obrigatório.',
             'user_id.exists' => 'O campo user_id deve corresponder a um usuário existente.',
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser uma string.',
@@ -80,10 +77,10 @@ class EnderecoRequest extends FormRequest
             'rua.max' => 'O campo rua deve ter no máximo :max caracteres.',
             'numero.required' => 'O campo número é obrigatório.',
             'numero.numeric' => 'O campo número deve ser um número.',
-            'complemento.nullable' => 'O campo complemento é opcional.',
             'complemento.string' => 'O campo complemento deve ser uma string.',
             'complemento.max' => 'O campo complemento deve ter no máximo :max caracteres.',
-            'situacao_id.required' => 'O campo situacao e obrigatorio'
+            'situacao_id.exists' => 'O campo situacao_id deve corresponder a uma situação existente.',
         ];
     }
 }
+

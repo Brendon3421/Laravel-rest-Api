@@ -17,7 +17,7 @@ class UserServices
     {
         try {
             // Recuperar os dados do banco pelo Id em ordem decrescente e faz a paginação de no máximo 3 por página
-            $users = User::with(['situacao', 'genero'])->orderBy('ID', 'DESC')->paginate(3);
+            $users = User::with(['empresa','situacao', 'genero'])->orderBy('ID', 'DESC')->paginate(3);
 
             // Mapear os modelos para DTOs
             $userData = $users->map(function ($user) {
@@ -50,7 +50,7 @@ class UserServices
     {
         try {
             // Carregar as relações situacao e genero
-            $user->load(['situacao', 'genero']);
+            $user->load(['empresa','situacao', 'genero']);
             $userDTO = UserDTO::fromModel($user);
             // Preparar os dados do usuário para a resposta JSON
             return response()->json([

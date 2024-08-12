@@ -19,8 +19,19 @@ class EnderecoDTO
     public $created_at;
     public $updated_at;
 
-    public function __construct($id, $user_name, $situacao_id, $name, $cep, $rua, $numero, $complemento, $ip_address, $created_at, $updated_at)
-    {
+    public function __construct(
+        $id = null,
+        $user_name = null,
+        $situacao_id = null,
+        $name = null,
+        $cep = null,
+        $rua = null,
+        $numero = null,
+        $complemento = null,
+        $ip_address = null,
+        $created_at = null,
+        $updated_at = null
+    ) {
         $this->id = $id;
         $this->user_name = $user_name;
         $this->situacao_id = $situacao_id;
@@ -47,8 +58,7 @@ class EnderecoDTO
             $request->complemento,
             $request->ip(),
             now(),
-            $request->updated_at,
-
+            $request->updated_at ?? now()
         );
     }
 

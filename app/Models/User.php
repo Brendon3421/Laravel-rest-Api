@@ -22,6 +22,7 @@ class User extends Authenticatable
         'password',
         'genero_id',
         'situacao_id',
+        'empresa_id', // Adicionado o campo 'empresa_id'
     ];
 
     protected $hidden = [
@@ -37,6 +38,11 @@ class User extends Authenticatable
     protected $attributes = [
         'situacao_id' => 1,
     ];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresas::class);
+    }
 
     public function situacao()
     {
