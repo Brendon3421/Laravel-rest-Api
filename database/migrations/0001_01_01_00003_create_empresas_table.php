@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->foreignId('user_id')->nullable(); // FK será adicionada em uma migration separada
-            $table->foreignId('situacao_id')->default(1); // FK será adicionada em uma migration separada
-            $table->foreignId('endereco_id')->nullable(); // FK será adicionada em uma migration separada
-            $table->string('cnpj', 14); // CNPJ deve ser uma string para incluir zeros à esquerda
+            $table->foreignId('user_id')->nullable(); //o usuario que conter sera o dono da empresa!, o super-admin
+            $table->foreignId('situacao_id')->default(1); 
+            $table->foreignId('endereco_id')->nullable(); 
+            $table->string('cnpj', 14); 
             $table->string('razao_social', 255);
             $table->string('inscricao_estadual', 255);
             $table->date('fundacao');

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\ContatosServices;
 use Illuminate\Support\ServiceProvider;
 
 class ContatosServiceProvider extends ServiceProvider
@@ -11,7 +12,9 @@ class ContatosServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ContatosServices::class,function ($app){
+            return new ContatosServices;
+    });
     }
 
     /**

@@ -51,30 +51,28 @@ Route::post('/rolesUsers', [RoleUserController::class, 'store']); // http://127.
 Route::put('/rolesUsers/{rolesUser}', [RoleUserController::class, 'update']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} editar a regra de um usuario
 Route::delete('/rolesUsers/{rolesUser}', [RoleUserController::class, 'destroy']); // http://127.0.0.1:8000/api/rolesUsers/{rolesUsers} exclui regra de um usuario
 //rotas ACL Habilidades da regra de usuario
-Route::get('/abilitiyRole', [abilityRoleController::class, 'index']);// http://127.0.0.1:8000/api/abilitiyRole retorna lista da regra e suas habilidades
+Route::get('/abilitiyRole', [abilityRoleController::class, 'index']); // http://127.0.0.1:8000/api/abilitiyRole retorna lista da regra e suas habilidades
 Route::get('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'show']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} retorna regra e suas habilidades
 Route::post('/abilitiyRole', [abilityRoleController::class, 'store']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para adicionar uma habilidade a regra
 Route::put('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'update']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
 Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'destroy']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
 //route Empresas 
-Route::get('/empresas', [EmpresasController::class,'index']);// http://127.0.0.1:8000/api/empresas listar empresas
-Route::get('/empresas/{empresas}', [EmpresasController::class,'show']);// http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
-// Crud COntatos
-Route::get('/contatos',[ContatosController::class, 'index']);
-Route::get('/contatos/{contatos}',[ContatosController::class, 'show']);
+Route::get('/empresas', [EmpresasController::class, 'index']); // http://127.0.0.1:8000/api/empresas listar empresas
+Route::get('/empresas/{empresas}', [EmpresasController::class, 'show']); // http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
+
 
 // rotas que sao necessarios os tokens de autenticacao 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/users', [UserController::class, 'index']); //get http://127.0.0.1:8000/api/users?page=1 exibe conteudo de  todos os usuarios 
-    
+
     //rotas endereco
     Route::get('/endereco', [EnderecoController::class, 'index']); //get http://127.0.0.1:8000/api/endereco/1 Exibe todos os endereco 
     Route::get('/endereco/{endereco}', [EnderecoController::class, 'show']); //get http://127.0.0.1:8000/api/endereco/{endereco} exibe endereco do Id solicitado
     Route::post('/endereco', [EnderecoController::class, 'store']); //get http://127.0.0.1:8000/api/endereco/ Cria um endereco
     Route::put('/endereco/{endereco}', [EnderecoController::class, 'update']); //get http://127.0.0.1:8000/api/endereco/{{endereco}} edita um endereco solicitado 
     Route::delete('/endereco/{endereco}', [EnderecoController::class, 'destroy']); //get http://127.0.0.1:8000/api/endereco/{{endereco}} Exclui um endereco solicitado
-    
+
     //rotas do genero
     Route::get('/genero', [GeneroController::class, 'index'])->name('genero'); //get http://127.0.0.1:8000/api/genero/ , exibe conteudo dos generos cadastrados
     Route::post('/genero', [GeneroController::class, 'store']); //post http://127.0.0.1:8000/api/genero/ , cria um genero
@@ -82,8 +80,9 @@ route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/genero/{genero}', [GeneroController::class, 'show']); //get http://127.0.0.1:8000/api/genero/{genero} puxa genero com o id solicitado
     Route::delete('/genero/{genero}', [GeneroController::class, 'destroy']); //get http://127.0.0.1:8000/api/genero/{genero} puxa genero com o id solicitado
     //contatos
-    Route::post('/contatos',[ContatosController::class, 'store']);
-    
-    
-    
+    Route::post('/contatos', [ContatosController::class, 'store']);
+    Route::get('/contatos', [ContatosController::class, 'index']);
+    Route::get('/contatos/{contatos}', [ContatosController::class, 'show']);
+    Route::delete('/contatos/{contatos}', [ContatosController::class, 'destroy']);
+    Route::put('/contatos/{contatos}', [ContatosController::class, 'update']);
 });

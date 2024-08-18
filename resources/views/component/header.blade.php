@@ -11,7 +11,7 @@
             <a class="nav-link active" aria-current="page" href="{{route('/login')}}">login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('register')}}">registrar</a>
+            <a class="nav-link active" aria-current="page" href="{{route('/register')}}">registrar</a>
           </li>
       </div>
     </div>

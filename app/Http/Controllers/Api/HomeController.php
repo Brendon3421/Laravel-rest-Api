@@ -18,8 +18,7 @@ class HomeController extends Controller
         return view('index', compact('generos'));
     }
     public function Dashboard()
-    { 
-        
+    {   
         return view('dashboard');
         
     }

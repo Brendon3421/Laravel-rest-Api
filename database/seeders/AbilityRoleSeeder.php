@@ -16,33 +16,33 @@ class AbilityRoleSeeder extends Seeder
         if (!AbilityRole::where("role_id", 2)->where('ability_id', 1)->first()) {
             AbilityRole::create([
                 "id" => 1,
-                "role_id" => 2,
+                "role_id" => 1,
                 "ability_id" => 1,
             ]);
         }
         if (!AbilityRole::where("role_id", 2)->where('ability_id', 2)->first()) {
             AbilityRole::create([
                 "id" => 2,
-                "role_id" => 2,
+                "role_id" => 1,
                 "ability_id" => 2,
             ]);
         }
         if (!AbilityRole::where("role_id", 2)->where('ability_id', 3)->first()) {
             AbilityRole::create([
                 "id" => 3,
-                "role_id" => 2,
+                "role_id" => 1,
                 "ability_id" => 3,
             ]);
             if (!AbilityRole::where("role_id", 2)->where('ability_id', 4)->first()) {
                 AbilityRole::create([
                     "id" => 4,
-                    "role_id" => 2,
+                    "role_id" => 1,
                     "ability_id" => 4,
                 ]);
                 if (!AbilityRole::where("role_id", 2)->where('ability_id', 5)->first()) {
                     AbilityRole::create([
                         "id" => 5,
-                        "role_id" => 2,
+                        "role_id" => 1,
                         "ability_id" => 5,
                     ]);
                 }

@@ -22,7 +22,7 @@ class User extends Authenticatable
         'password',
         'genero_id',
         'situacao_id',
-        'empresa_id', // Adicionado o campo 'empresa_id'
+        'empresa_id', 
     ];
 
     protected $hidden = [

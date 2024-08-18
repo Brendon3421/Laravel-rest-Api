@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\DTOs\ContatosDTO;
-use App\Http\Requests\ContatosRequest;
-use App\Models\Contatos;
+use App\Http\Requests\ContatosUserRequest;
+use App\Models\contatosUser;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +16,7 @@ class ContatosServices
     public function listarContatos(): JsonResponse
     {
         try {
-            $contato = Contatos::with(['user', 'empresa'])->orderby('ID', 'DESC')->paginate(3);
+            $contato = contatosUser::with(['user'])->orderby('ID', 'DESC')->paginate(3);
             $contatosDTO = $contato->map(function ($contato) {
                 return ContatosDTO::fromModel($contato);
             });
@@ -41,10 +41,10 @@ class ContatosServices
         }
     }
 
-    public function listarContatosId(Contatos $contatos): JsonResponse
+    public function listarContatosId(contatosUser $contatos): JsonResponse
     {
         try {
-            $contatos->load(['user', 'empresa']);
+            $contatos->load(['user']);
             $contatosDTO = ContatosDTO::fromModel($contatos);
 
             return response()->json([
@@ -61,44 +61,74 @@ class ContatosServices
         }
     }
 
-    public function criarContatos(ContatosRequest $request): JsonResponse
+    public function criarContatos(ContatosUserRequest $request): JsonResponse
     {
         try {
             DB::beginTransaction();
-
-            $user = Auth::user();
-            $user_id = $user->id;
-            $empresa_id = $user->empresa_id;
-
-            // Valida e obtém os dados do request
-            $validatedData = $request->validated();
-
-            // Adiciona user_id e empresa_id aos dados
-            $validatedData['user_id'] = $user_id;
-            $validatedData['empresa_id'] = $empresa_id;
-
-            // Cria um DTO a partir dos dados validados
-            $contatosDTO = ContatosDTO::MakefromModel($validatedData,$user_id,$empresa_id);
-
-            // Cria o contato no banco de dados
-            $contato = Contatos::create($contatosDTO->toArray());
-
-            // Obtém o DTO do contato recém-criado
-            $contatoDTO = ContatosDTO::fromModel($contato);
-
+            // Obter o ID do usuário autenticado
+            $user_id = auth()->id();
+            $contatosDTO = ContatosDTO::makeFromModel($request, $user_id);
+            $contatosArray = $contatosDTO->toArray();
+            $contato = ContatosUser::create($contatosArray);
             DB::commit();
-
             return response()->json([
                 'status' => true,
-                'contato' => $contatoDTO,
-                'message' => 'Contato criado com sucesso'
-            ], 201);
+                'contato' => $contato,
+                'message' => 'Contato foi criado com sucesso',
+            ], 200);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
                 'exception' => $e->getMessage(),
-                'message' => 'Falha ao criar contato',
+                'error' => 'Falha ao criar contato'
+            ], 400);
+        }
+    }
+
+
+    public function editarContatos(ContatosUserRequest $request, contatosUser $contatos)
+    {
+        try {
+            DB::beginTransaction();
+            $contatos->fill($request->validated());
+            $contatos->save();
+            $contatosDTO = ContatosDTO::makeFromModel($request, $contatos->user_id);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'endereco' => $contatosDTO->toArray(),
+                'message' => 'Contato atualizado com sucesso'
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Erro ao atualizar contato'
+            ], 400);
+        }
+    }
+
+
+    public function excluirContatoUser(contatosUser $contatos): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+            $contatos->delete();
+            $contatosDTO = ContatosDTO::fromModel($contatos)->toArray();
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'contatos' => $contatos,
+                'sucess' => "Contato deletado com sucesso",
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'exception' => $e->getMessage(),
+                'error' => "Nao foi possivel deletar",
             ], 400);
         }
     }

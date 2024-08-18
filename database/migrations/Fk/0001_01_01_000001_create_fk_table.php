@@ -21,7 +21,7 @@ return new class extends Migration
             if (empty($foreignKeyExists)) {
                 $table->foreignId('genero_id')->after('name')->nullable()->constrained('genero')->onDelete('set null');
             }
-            
+
             $foreignKeyExists = DB::select(
                 "SELECT * FROM information_schema.KEY_COLUMN_USAGE 
                  WHERE TABLE_NAME = 'users' AND CONSTRAINT_NAME = 'users_situacao_id_foreign'"
@@ -35,26 +35,18 @@ return new class extends Migration
                  WHERE TABLE_NAME = 'users' AND CONSTRAINT_NAME = 'users_empresa_id_foreign'"
             );
             if (empty($foreignKeyExists)) {
-                $table->foreignId('empresa_id')->after('situacao_id')->constrained('empresas')->onDelete('cascade');
+                $table->foreignId('empresa_id')->nullable()->after('situacao_id')->constrained('empresas')->onDelete('cascade');
             }
         });
 
         // Adiciona as chaves estrangeiras na tabela 'contatos'
-        Schema::table('contatos', function (Blueprint $table) {
+        Schema::table('contatos_user', function (Blueprint $table) {
             $foreignKeyExists = DB::select(
                 "SELECT * FROM information_schema.KEY_COLUMN_USAGE 
-                 WHERE TABLE_NAME = 'contatos' AND CONSTRAINT_NAME = 'contatos_user_id_foreign'"
+                 WHERE TABLE_NAME = 'contatos_user' AND CONSTRAINT_NAME = 'contatos_user_id_foreign'"
             );
             if (empty($foreignKeyExists)) {
-                $table->foreign('user_id')->after('name')->references('id')->on('users')->onDelete('cascade');
-            }
-
-            $foreignKeyExists = DB::select(
-                "SELECT * FROM information_schema.KEY_COLUMN_USAGE 
-                 WHERE TABLE_NAME = 'contatos' AND CONSTRAINT_NAME = 'contatos_empresa_id_foreign'"
-            );
-            if (empty($foreignKeyExists)) {
-                $table->foreign('empresa_id')->after('user_id')->references('id')->on('empresas')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             }
         });
 
@@ -111,7 +103,7 @@ return new class extends Migration
                 $table->foreign('endereco_id')->after('situacao_id')->nullable()->references('id')->on('endereco')->onDelete('set null');
             }
         });
-        
+
         Schema::table('sub_empresas_users', function (Blueprint $table) {
             $foreignKeyExists = DB::select(
                 "SELECT * FROM information_schema.KEY_COLUMN_USAGE 
@@ -120,7 +112,7 @@ return new class extends Migration
             if (empty($foreignKeyExists)) {
                 $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             }
-        
+
             $foreignKeyExists = DB::select(
                 "SELECT * FROM information_schema.KEY_COLUMN_USAGE 
                  WHERE TABLE_NAME = 'sub_empresas_users' AND CONSTRAINT_NAME = 'sub_empresas_users_subEmpresas_id_foreign'"
@@ -148,8 +140,6 @@ return new class extends Migration
                 $table->foreignId('situacao_id')->after('situacao_id')->nullable()->default(1)->constrained('situacao')->onDelete('cascade');
             }
         });
-
-
     }
     /**
      * Reverse the migrations.
@@ -187,11 +177,10 @@ return new class extends Migration
             $table->dropForeign(['user_id']);
             $table->dropForeign(['subEmpresas_id']);
         });
-      // Remove as chaves estrangeiras da tabela 'enderec
-      Schema::table('endereco', function (Blueprint $table) {
-        $table->dropForeign(['user_id']);
-        $table->dropForeign(['situacao_id']);
-    });
-
+        // Remove as chaves estrangeiras da tabela 'enderec
+        Schema::table('endereco', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['situacao_id']);
+        });
     }
 };

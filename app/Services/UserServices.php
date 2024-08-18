@@ -2,12 +2,16 @@
 
 namespace App\Services;
 
+use App\DTOs\ContatosDTO;
 use App\DTOs\EnderecoDTO;
 use App\DTOs\UserDTO;
+use App\Http\Requests\ContatosUserRequest;
 use App\Models\User;
 use App\Http\Requests\EnderecoRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\contatosUser;
 use App\Models\Endereco;
+use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +21,7 @@ class UserServices
     {
         try {
             // Recuperar os dados do banco pelo Id em ordem decrescente e faz a paginação de no máximo 3 por página
-            $users = User::with(['empresa','situacao', 'genero'])->orderBy('ID', 'DESC')->paginate(3);
+            $users = User::with(['empresa', 'situacao', 'genero'])->orderBy('ID', 'DESC')->paginate(3);
 
             // Mapear os modelos para DTOs
             $userData = $users->map(function ($user) {
@@ -50,7 +54,7 @@ class UserServices
     {
         try {
             // Carregar as relações situacao e genero
-            $user->load(['empresa','situacao', 'genero']);
+            $user->load(['empresa', 'situacao', 'genero']);
             $userDTO = UserDTO::fromModel($user);
             // Preparar os dados do usuário para a resposta JSON
             return response()->json([
@@ -67,12 +71,15 @@ class UserServices
         }
     }
 
-    public function criarUsuario(UserRequest $request, EnderecoRequest $enderecoRequest)
-    {
+    public function criarUsuario(
+        UserRequest $request,
+        EnderecoRequest $enderecoRequest,
+        ContatosUserRequest $contatosUserRequest
+    ) {
         try {
             DB::beginTransaction();
 
-            // Validar os dados e criar o DTO
+            // Validar os dados do usuário e criar o DTO
             $userDTO = UserDTO::fromModelCreate($request->validated());
             $user = User::create($userDTO->toArray());
 
@@ -82,20 +89,34 @@ class UserServices
             $enderecoData['user_id'] = $user->id;
             $endereco = Endereco::create($enderecoData);
 
+            // Validar os dados de contato e criar o DTO
+            $contatosDTO = ContatosDTO::makeFromModel($contatosUserRequest, $user->id);
+            $contatosArray = $contatosDTO->toArray();
+            $contato = ContatosUser::create($contatosArray);
+
             DB::commit();
+
             return response()->json([
                 'status' => true,
                 'user' => $user,
                 'endereco' => $endereco,
+                'contato' => $contato,
                 'message' => 'Usuário cadastrado com sucesso'
             ], 201);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro de validação',
+                'errors' => $e->getMessage() // Retorna erros de validação específicos
+            ], 422);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar usuário',
                 'error' => $e->getMessage()
-            ], 400);
+            ], 500); // Código 500 para erros internos do servidor
         }
     }
 

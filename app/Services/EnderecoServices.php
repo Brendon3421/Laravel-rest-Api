@@ -1,4 +1,4 @@
-/*
+<?php
 namespace App\Services;
 
 use App\DTOs\EnderecoDTO;
@@ -34,13 +34,6 @@ class EnderecoServices
                 'status' => false,
                 'error' => $e->getMessage(),
                 'message' => 'Falha ao listar endereços',
-                'pagination' => [
-                    'total' => $enderecos->total(),
-                    'count' => $enderecos->count(),
-                    'per_page' => $enderecos->perPage(),
-                    'current_page' => $enderecos->currentPage(),
-                    'total_pages' => $enderecos->lastPage()
-                ]
             ], 400);
         }
     }
@@ -69,6 +62,9 @@ class EnderecoServices
         try {
             DB::beginTransaction();
             $userId = auth()->id();
+            dd($userId);
+
+
             $enderecoDTO = EnderecoDTO::makeFromRequest($request, $userId);
 
             $enderecoData = $enderecoDTO->toArray();
@@ -98,11 +94,8 @@ class EnderecoServices
             DB::beginTransaction();
             $endereco->fill($request->validated());
             $endereco->save();
-
             $enderecoDTO = EnderecoDTO::makeFromRequest($request, $endereco->user_id);
-
             DB::commit();
-
             return response()->json([
                 'status' => true,
                 'endereco' => $enderecoDTO->toArray(),

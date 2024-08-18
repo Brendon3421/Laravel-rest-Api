@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContatosUserRequest;
 use App\Http\Requests\EnderecoRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -28,9 +29,9 @@ class UserController extends Controller
         return $this->userServices->listarUSerEspecifico($user);
     }
 
-    public function store(UserRequest $request, EnderecoRequest $enderecoRequest): JsonResponse
+    public function store(UserRequest $request, EnderecoRequest $enderecoRequest, ContatosUserRequest $contatosUserRequest): JsonResponse
     {
-        return $this->userServices->criarUsuario($request, $enderecoRequest);
+        return $this->userServices->criarUsuario($request, $enderecoRequest,$contatosUserRequest);
     }
 
     public function update(UserRequest $request, User $user,  EnderecoRequest $enderecoRequest) : JsonResponse

@@ -22,11 +22,11 @@ Route::get('/dashboard', [HomeController::class , 'dashboard'])->name('/dashboar
 
 Route::get('/ACL', function () {
 
-    Auth::loginUsingId(3);
-    $users = User::all();
-    return view('Teste' ,[
-        'usuarios'=> $users,
-    ]);
+   $userlooged = Auth::loginUsingId(1);
+    print_r($userlooged);
+    echo"<pre>";
+    die;
+
 
 });
 Route::get('/user/create', function () {
