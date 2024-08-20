@@ -25,7 +25,6 @@ class EmpresasServices
             $empresasDTO = $empresas->map(function ($empresa) {
                 return EmpresasDTO::fromModel($empresa)->toArray();
             });
-
             return response()->json([
                 'status' => true,
                 'Empresas' => $empresasDTO,
@@ -54,14 +53,7 @@ class EmpresasServices
             return response()->json([
                 'status' => true,
                 'Empresa' => $empresasDTO,
-                'message' => 'Empresa listada com sucesso',
-                'pagination' => [
-                    'total' => $empresas->total(),
-                    'count' => $empresas->count(),
-                    'per_page' => $empresas->perPage(),
-                    'current_page' => $empresas->currentPage(),
-                    'total_pages' => $empresas->lastPage()
-                ]
+                'message' => 'Empresa listada com sucesso'
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -73,7 +65,7 @@ class EmpresasServices
     }
 
 
-    public function criarEmpresas(EmpresasRequest $request, EnderecoRequest $enderecoRequest ,$user_id)
+    public function criarEmpresas(EmpresasRequest $request, EnderecoRequest $enderecoRequest )
     {
         try {
             DB::beginTransaction();
@@ -85,9 +77,14 @@ class EmpresasServices
             $endereco = Endereco::create($enderecoRequest->validated());
             $enderecoDTO = EnderecoDTO::makeFromRequest($endereco ,$user_id)->toArray();
             $enderecoDTO = EnderecoDTO::fromModel($endereco ,$user_id)->toArray();
-            DB::commit();
-
             //contato falta fazer
+
+
+
+
+
+            dd($empresasModel);
+            die;
             DB::commit();
             return response()->json([
                 'status' => true,

@@ -27,9 +27,8 @@ class EmpresasRequest extends FormRequest
             "razao_social" => 'required|string|max:255',
             "inscricao_estadual" => 'required|string|max:255',
             "fundacao" => 'required|date',
-            "situacao_id" => 'required|integer|exists:situacoes,id',
-            "endereco_id" => 'required|integer|exists:enderecos,id',
-            "contato_id" => 'nullable|integer|exists:contatos,id'
+            "situacao_id" => 'required|exists:situacao,id',
+            "endereco_id"=> 'nullable'
         ];
     }
 

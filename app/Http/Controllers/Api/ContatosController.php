@@ -25,9 +25,9 @@ class ContatosController extends Controller
         return $this->contatosServices->listarContatos();
     }
 
-    public function show(contatosUser $contatosUser): JsonResponse
+    public function show(contatosUser $contatos): JsonResponse
     {
-        return $this->contatosServices->listarContatosId($contatosUser);
+        return $this->contatosServices->listarContatosId($contatos);
     }
 
     public function store(ContatosUserRequest $request): JsonResponse

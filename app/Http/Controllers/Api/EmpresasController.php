@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EmpresasRequest;
 use App\Models\Empresas;
 use App\Services\EmpresasServices;
 use Illuminate\Http\JsonResponse;
@@ -26,4 +27,14 @@ class EmpresasController extends Controller
     {
         return $this->empresasServices->listarEmpresasId($empresas);
     }
+
+    public function store(EmpresasRequest $request):JsonResponse
+    {
+        dd($request->all());
+
+        // return $this->empresasServices->criarEmpresas($request);
+    }
+
+
+
 }

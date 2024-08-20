@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AbilitiesController;
 use App\Http\Controllers\api\abilityRoleController;
 use App\Http\Controllers\Api\AbilityUserController;
+use App\Http\Controllers\api\ContatoEmpresaController;
 use App\Http\Controllers\Api\ContatosController;
 use App\Http\Controllers\Api\EmpresasController;
 use App\Http\Controllers\Api\EnderecoController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\RoleUserController;
 use App\Http\Controllers\Api\SituacaoController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\ContatoEmpresa;
 use Illuminate\Support\Facades\Route;
 //rotas situacao
 Route::get('/situacao', [SituacaoController::class, 'index']); //get http://127.0.0.1:8000/api/situacao/ , exibe conteudo das situacao 
@@ -59,6 +61,14 @@ Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'des
 //route Empresas 
 Route::get('/empresas', [EmpresasController::class, 'index']); // http://127.0.0.1:8000/api/empresas listar empresas
 Route::get('/empresas/{empresas}', [EmpresasController::class, 'show']); // http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
+Route::post('/empresas', [EmpresasController::class ,'store']);
+
+//contato Empresa
+Route::post('/contato/empresa', [ContatoEmpresaController::class, 'store']);
+Route::get('/contato/empresa', [ContatoEmpresaController::class, 'index']);
+Route::get('/contato/empresa/{contatoEmpresa}', [ContatoEmpresaController::class, 'show']);
+// Route::delete('/contatos/{contatos}', [ContatosController::class, 'destroy']);
+// Route::put('/contatos/{contatos}', [ContatosController::class, 'update']);
 
 
 // rotas que sao necessarios os tokens de autenticacao 

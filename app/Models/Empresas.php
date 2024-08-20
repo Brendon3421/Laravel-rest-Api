@@ -24,7 +24,7 @@ class Empresas extends Model
         "user_id",
         "situacao_id",
         "endereco_id",
-        "contato_id"
+        "contatoEmpresa_id"
     ];
 
 

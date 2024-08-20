@@ -45,12 +45,12 @@ class EmpresasDTO
         $this->updated_at = $updated_at;
     }
 
-    public static function fromModel(Empresas $empresas, $user_id): self
+    public static function fromModel(Empresas $empresas): self
     {
         return new self(
             $empresas->id,
             $empresas->name,
-            $user_id,
+            $empresas->user->name,
             $empresas->situacao_id,
             $empresas->endereco_id,
             $empresas->cnpj,

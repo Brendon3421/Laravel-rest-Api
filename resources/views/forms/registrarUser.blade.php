@@ -114,7 +114,8 @@
                 </div>
                 <div class="form-group">
                     <label for="imagem">Imagem (jpg, png, gif, svg)</label>
-                    <input type="file" class="form-control" id="imagem" name="imagem" accept=".jpg,.jpeg,.png,.gif,.svg">
+                    <input type="file" class="form-control" id="imagem" name="imagem"
+                        accept=".jpg,.jpeg,.png,.gif,.svg">
                     <span class="text-danger" id="imagem-error"></span>
                 </div>
                 <div class="form-group">
@@ -123,12 +124,60 @@
                     <span class="text-danger" id="descricao-error"></span>
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
+                <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+            </div>
+
+            <!-- Step 4: Contact Information -->
+            <div class="step">
+                <div class="form-group">
+                    <label for="role">Regra de Usuário</label>
+                    <select class="form-control" id="role" name="role_id">
+                        @foreach ($role as $r)
+                            <option value="{{ $r->id }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                    <span class="text-danger" id="role-error"></span>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
+            <div class="step">
+                <div id="company-form" class="step" style="display: none;">
+                    <h4>Cadastro de Empresa</h4>
+                    <div class="form-group">
+                        <label for="company_name">Nome da Empresa*</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name" required>
+                        <span class="text-danger" id="company_name-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="company_cnpj">CNPJ*</label>
+                        <input type="text" class="form-control" id="company_cnpj" name="company_cnpj" required>
+                        <span class="text-danger" id="company_cnpj-error"></span>
+                    </div>
+                    <!-- Outros campos de cadastro de empresa -->
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="prevStep()">Previous</button>
+                <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+            </div>
+
         </form>
     </div>
 
     <script>
+        document.getElementById('role').addEventListener('change', function() {
+            const selectedRole = this.value;
+            const companyForm = document.getElementById('company-form');
+
+            // Supondo que o ID do super-admin seja "1"
+            if (selectedRole === '1') {
+                companyForm.style.display = 'block';
+            } else {
+                companyForm.style.display = 'none';
+            }
+        });
+
         let currentStep = 0;
         showStep(currentStep);
 
