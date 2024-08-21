@@ -14,8 +14,6 @@ return new class extends Migration
         //tabela de endereco do usuario
         Schema::create('endereco', function (Blueprint $table) {
             $table->id()->primary();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->nullable();
-            $table->foreignId('situacao_id')->nullable()->default(1)->constrained('situacao')->onDelete('cascade');
             $table->string('name');
             $table->integer('cep');
             $table->string('rua');

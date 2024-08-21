@@ -82,7 +82,6 @@ class UserServices
             // Validar os dados do usuário e criar o DTO
             $userDTO = UserDTO::fromModelCreate($request->validated());
             $user = User::create($userDTO->toArray());
-
             // Validar os dados de endereço e criar o DTO
             $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id);
             $enderecoData = $enderecoDTO->toArray();

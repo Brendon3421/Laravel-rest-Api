@@ -22,48 +22,49 @@ class EmpresasRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => 'required|string|max:255|min:10',
-            "cnpj" => 'required|size:14',
-            "razao_social" => 'required|string|max:255',
-            "inscricao_estadual" => 'required|string|max:255',
-            "fundacao" => 'required|date',
-            "situacao_id" => 'required|exists:situacao,id',
-            "endereco_id"=> 'nullable'
+            // "name" => 'required|string|max:255|min:10',
+            // "user_id" => 'nullable|exists:situacao,id',
+            // "situacao_id" => 'required|exists:situacao,id',
+            // "endereco_id" => 'required|nullable|exists:endereco,id',
+            // "contato_empresa_id" => 'required|nullable|exists:contato_empresa,id',
+            // "cnpj" => 'required|size:14',
+            // "razao_social" => 'required|string|max:255',
+            // "inscricao_estadual" => 'required|string|max:255',
+            // "fundacao" => 'required|date',
+
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'O campo nome é obrigatório.',
-            'name.string' => 'O campo nome deve ser uma string.',
-            'name.max' => 'O campo nome não pode ter mais de 255 caracteres.',
-            'name.min' => 'O campo nome deve ter pelo menos 10 caracteres.',
+            'name.required' => 'O nome da empresa é obrigatório.',
+            'name.string' => 'O nome da empresa deve ser uma sequência de caracteres válida.',
+            'name.max' => 'O nome da empresa não pode exceder 255 caracteres.',
+            'name.min' => 'O nome da empresa deve ter pelo menos 10 caracteres.',
 
-            'cnpj.required' => 'O campo CNPJ é obrigatório.',
-            'cnpj.size' => 'O campo CNPJ deve ter exatamente 14 caracteres.',
+            'cnpj.required' => 'O CNPJ da empresa é obrigatório.',
+            'cnpj.size' => 'O CNPJ deve ter exatamente 14 caracteres.',
 
-            'razao_social.required' => 'O campo razão social é obrigatório.',
-            'razao_social.string' => 'O campo razão social deve ser uma string.',
-            'razao_social.max' => 'O campo razão social não pode ter mais de 255 caracteres.',
+            'razao_social.required' => 'A razão social da empresa é obrigatória.',
+            'razao_social.string' => 'A razão social deve ser uma sequência de caracteres válida.',
+            'razao_social.max' => 'A razão social não pode exceder 255 caracteres.',
 
-            'inscricao_estadual.required' => 'O campo inscrição estadual é obrigatório.',
-            'inscricao_estadual.string' => 'O campo inscrição estadual deve ser uma string.',
-            'inscricao_estadual.max' => 'O campo inscrição estadual não pode ter mais de 255 caracteres.',
+            'inscricao_estadual.required' => 'A inscrição estadual da empresa é obrigatória.',
+            'inscricao_estadual.string' => 'A inscrição estadual deve ser uma sequência de caracteres válida.',
+            'inscricao_estadual.max' => 'A inscrição estadual não pode exceder 255 caracteres.',
 
-            'fundacao.required' => 'O campo fundação é obrigatório.',
-            'fundacao.date' => 'O campo fundação deve ser uma data válida.',
+            'fundacao.required' => 'A data de fundação da empresa é obrigatória.',
+            'fundacao.date' => 'A data de fundação deve ser uma data válida.',
 
-            'situacao_id.required' => 'O campo situação é obrigatório.',
-            'situacao_id.integer' => 'O campo situação deve ser um número inteiro.',
-            'situacao_id.exists' => 'A situação selecionada é inválida.',
+            'situacao_id.required' => 'A situação da empresa é obrigatória.',
+            'situacao_id.exists' => 'A situação selecionada não é válida.',
 
-            'endereco_id.required' => 'O campo endereço é obrigatório.',
-            'endereco_id.integer' => 'O campo endereço deve ser um número inteiro.',
-            'endereco_id.exists' => 'O endereço selecionado é inválido.',
+            'endereco_id.required' => 'O endereço da empresa é obrigatório.',
+            'endereco_id.exists' => 'O endereço selecionado não é válido.',
 
-            'contato_id.integer' => 'O campo contato deve ser um número inteiro.',
-            'contato_id.exists' => 'O contato selecionado é inválido.',
+            'contato_empresa_id.required' => 'O contato da empresa é obrigatório.',
+            'contato_empresa_id.exists' => 'O contato selecionado não é válido.',
         ];
     }
 }

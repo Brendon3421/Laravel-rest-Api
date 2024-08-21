@@ -27,7 +27,6 @@ Route::post('/users', [UserController::class, 'store']); //post - http://127.0.0
 Route::put('/users/{user}', [UserController::class, 'update']); //put  http://127.0.0.1:8000/api/users/1 , edita conteudo de um usuario especifico
 Route::delete('/users/{user}', [UserController::class, 'destroy']); //delete  http://127.0.0.1:8000/api/users/1 , deletar  usuario especifico
 route::post('/login', [LoginController::class, 'auth'])->name('login'); // http://127.0.0.1:8000/api/login/{information users} , rota publica de login do usuario ao sistema
-
 //rotas ACL Habilidades
 Route::get('/abilities', [AbilitiesController::class, 'index']); // http://127.0.0.1:8000/api/abilities/ , rota para listar habilidades
 Route::get('/abilities/{ability}', [AbilitiesController::class, 'show']); // htt[=[=p://127.0.0.1:8000/api/abilities/{abilities} , rota de listar habilidade especifica
@@ -61,16 +60,13 @@ Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'des
 //route Empresas 
 Route::get('/empresas', [EmpresasController::class, 'index']); // http://127.0.0.1:8000/api/empresas listar empresas
 Route::get('/empresas/{empresas}', [EmpresasController::class, 'show']); // http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
-Route::post('/empresas', [EmpresasController::class ,'store']);
 
 //contato Empresa
 Route::post('/contato/empresa', [ContatoEmpresaController::class, 'store']);
 Route::get('/contato/empresa', [ContatoEmpresaController::class, 'index']);
 Route::get('/contato/empresa/{contatoEmpresa}', [ContatoEmpresaController::class, 'show']);
-// Route::delete('/contatos/{contatos}', [ContatosController::class, 'destroy']);
-// Route::put('/contatos/{contatos}', [ContatosController::class, 'update']);
-
-
+Route::delete('/contatos/empresa/{contatos}', [ContatosController::class, 'destroy']);
+Route::put('/contatos/empresa/{contatos}', [ContatosController::class, 'update']);
 // rotas que sao necessarios os tokens de autenticacao 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 route::group(['middleware' => ['auth:sanctum']], function () {
@@ -95,4 +91,7 @@ route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/contatos/{contatos}', [ContatosController::class, 'show']);
     Route::delete('/contatos/{contatos}', [ContatosController::class, 'destroy']);
     Route::put('/contatos/{contatos}', [ContatosController::class, 'update']);
+
+    //empresa
+    Route::post('/empresas', [EmpresasController::class, 'store']);
 });

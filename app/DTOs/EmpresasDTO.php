@@ -12,6 +12,7 @@ class EmpresasDTO
     public $user_id;
     public $situacao_id;
     public $endereco_id;
+    public $contato_empresa_id;
     public $cnpj;
     public $razao_social;
     public $inscricao_estadual;
@@ -23,6 +24,7 @@ class EmpresasDTO
         $id,
         $name,
         $user_id,
+        $contato_empresa_id,
         $situacao_id,
         $endereco_id,
         $cnpj,
@@ -37,6 +39,7 @@ class EmpresasDTO
         $this->user_id = $user_id;
         $this->situacao_id = $situacao_id;
         $this->endereco_id = $endereco_id;
+        $this->contato_empresa_id = $contato_empresa_id;
         $this->cnpj = $cnpj;
         $this->razao_social = $razao_social;
         $this->inscricao_estadual = $inscricao_estadual;
@@ -53,6 +56,7 @@ class EmpresasDTO
             $empresas->user->name,
             $empresas->situacao_id,
             $empresas->endereco_id,
+            $empresas->contato_empresa_id,
             $empresas->cnpj,
             $empresas->razao_social,
             $empresas->inscricao_estadual,
@@ -70,6 +74,7 @@ class EmpresasDTO
             $user_id,
             $request->situacao_id,
             $request->endereco_id,
+            $request->contato_empresa_id,
             $request->cnpj,
             $request->razao_social,
             $request->inscricao_estadual,
@@ -87,6 +92,7 @@ class EmpresasDTO
             'user_id' => $this->user_id,
             'situacao_id' => $this->situacao_id,
             'endereco_id' => $this->endereco_id,
+            'contato_empresa_id' => $this->contato_empresa_id,
             'cnpj' => $this->cnpj,
             'razao_social' => $this->razao_social,
             'inscricao_estadual' => $this->inscricao_estadual,

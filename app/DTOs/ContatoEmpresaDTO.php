@@ -63,7 +63,7 @@ class ContatoEmpresaDTO
             $request->email,
             $request->celular,
             $request->telefone_fixo,
-            $request->imagem,
+            $request->file('imagem')->store('images/contatoEmpresa'),
             $request->descricao,
             now(),
             now()

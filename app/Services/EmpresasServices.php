@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\DTOs\ContatoEmpresaDTO;
 use App\DTOs\EmpresasDTO;
 use App\DTOs\EnderecoDTO;
+use App\Http\Requests\ContatoEmpresaRequest;
 use App\Http\Requests\EmpresasRequest;
 use App\Http\Requests\EnderecoRequest;
+use App\Models\ContatoEmpresa;
 use App\Models\Empresas;
 use App\Models\Endereco;
 use Exception;
@@ -65,26 +68,32 @@ class EmpresasServices
     }
 
 
-    public function criarEmpresas(EmpresasRequest $request, EnderecoRequest $enderecoRequest )
+    public function criarEmpresas(EmpresasRequest $request, EnderecoRequest $enderecoRequest, ContatoEmpresaRequest $contatoEmpresaRequest)
     {
         try {
             DB::beginTransaction();
-            $user_id = auth()->id();
+            $userId = auth()->id();
             // criou a empresa
-            $empresasDTO = EmpresasDTO::makefromModel($request ,$user_id);
-            $empresasModel = Empresas::fromModel($empresasDTO)->toArray();
+            // dd($request);
+            $empresasDTO = EmpresasDTO::makefromModel($request, $userId)->toArray();
+            $empresaModel = Empresas::create($empresasDTO);
+            dd($empresaModel);
+            $empresasModel = EmpresasDTO::fromModel($empresaModel)->toArray();
+            $empresa_id = $empresaModel->id;
             //crio o endereco da empresa
-            $endereco = Endereco::create($enderecoRequest->validated());
-            $enderecoDTO = EnderecoDTO::makeFromRequest($endereco ,$user_id)->toArray();
-            $enderecoDTO = EnderecoDTO::fromModel($endereco ,$user_id)->toArray();
+            $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest->validated(), $userId)->toArray();
+            $enderecoModel = Endereco::create($enderecoDTO);
+            $enderecoDTO = EnderecoDTO::fromModel($enderecoModel, $userId)->toArray();
             //contato falta fazer
+            $sub_empresa = null; //vai ficar como null pois nao tem sub empresa aqui!
+            $contatoEmpresaDTO = ContatoEmpresaDTO::makeFromModel($contatoEmpresaRequest->validated(), $empresa_id, $sub_empresa);
+            $contatoModel = ContatoEmpresa::create($contatoEmpresaDTO);
+            $contatoEmpresaDTO = ContatoEmpresaDTO::fromModel($contatoModel);
 
 
+            exit;
 
 
-
-            dd($empresasModel);
-            die;
             DB::commit();
             return response()->json([
                 'status' => true,

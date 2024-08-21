@@ -22,13 +22,21 @@ class ContatoEmpresaController extends Controller
         return $this->contatoEmpresaServices->listarContatos();
     }
 
-    public function show(ContatoEmpresa $contatoEmpresa)
+    public function show(contatoEmpresa $contatoEmpresa)
     {
-       echo "chamoi";
+        return $this->contatoEmpresaServices->listarContatosId($contatoEmpresa);
     }
-
     public function store(ContatoEmpresaRequest $request): JsonResponse
     {
         return $this->contatoEmpresaServices->criarContatos($request);
     }
+    public function update(ContatoEmpresaRequest $request, ContatoEmpresa $contatoEmpresa)
+    {
+        return $this->contatoEmpresaServices->editarContatos($request, $contatoEmpresa);
+    }
+    public function delete(ContatoEmpresa $contatoEmpresa ): JsonResponse
+    {
+        return $this->contatoEmpresaServices->excluirContatoUser($contatoEmpresa);
+    }
+
 }

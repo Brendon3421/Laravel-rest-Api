@@ -62,8 +62,6 @@ class EnderecoServices
         try {
             DB::beginTransaction();
             $userId = auth()->id();
-            dd($userId);
-
 
             $enderecoDTO = EnderecoDTO::makeFromRequest($request, $userId);
 

@@ -17,13 +17,14 @@ class Empresas extends Model
     protected $fillable = [
         "id",
         "name",
+        "user_id",
+        "situacao_id",
+        "endereco_id",
+        "contato_empresa_id",
         "cnpj",
         "razao_social",
         "inscricao_estadual",
         "fundacao",
-        "user_id",
-        "situacao_id",
-        "endereco_id",
         "contatoEmpresa_id"
     ];
 
@@ -32,7 +33,7 @@ class Empresas extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
+
     public function situacao()
     {
         return $this->belongsTo(Situacao::class, 'situacao_id');

@@ -42,11 +42,11 @@ class ContatoEmpresaServices
         }
     }
 
-    public function listarContatosId(ContatoEmpresa $contatosEmpresa): JsonResponse
+    public function listarContatosId(ContatoEmpresa $contatoEmpresa): JsonResponse
     {
         try {
-            $contatosEmpresa->load(['empresa']);
-            $contatosDTO = ContatoEmpresaDTO::fromModel($contatosEmpresa);
+            $contatoEmpresa->load(['empresa']);
+            $contatosDTO = ContatoEmpresaDTO::fromModel($contatoEmpresa);
 
             return response()->json([
                 'status' => true,
@@ -90,17 +90,18 @@ class ContatoEmpresaServices
     }
 
 
-    public function editarContatos(ContatosUserRequest $request, contatosUser $contatos)
+    public function editarContatos(ContatoEmpresaRequest $request, ContatoEmpresa $contatoEmpresa)
     {
         try {
             DB::beginTransaction();
-            $contatos->fill($request->validated());
-            $contatos->save();
-            $contatosDTO = ContatosDTO::makeFromModel($request, $contatos->user_id);
+            $contatoEmpresa->fill($request->validated());
+            $contatoEmpresa->save();
+            $contatoEmpresaDTO = ContatoEmpresaDTO::makeFromModel($request, $contatoEmpresa->empresa_id, $contatoEmpresa->sub_empresa_id);
+            $contatoEmpresaDTO->toArray();
             DB::commit();
             return response()->json([
                 'status' => true,
-                'endereco' => $contatosDTO->toArray(),
+                'endereco' => $contatoEmpresaDTO,
                 'message' => 'Contato atualizado com sucesso'
             ], 200);
         } catch (Exception $e) {
@@ -114,17 +115,17 @@ class ContatoEmpresaServices
     }
 
 
-    public function excluirContatoUser(contatosUser $contatos): JsonResponse
+    public function excluirContatoUser(ContatoEmpresa $contatoEmpresa): JsonResponse
     {
         try {
             DB::beginTransaction();
-            $contatos->delete();
-            $contatosDTO = ContatosDTO::fromModel($contatos)->toArray();
+            $contatoEmpresa->delete();
+            $contatoEmpresaDTO = ContatoEmpresaDTO::fromModel($contatoEmpresa)->toArray();
             DB::commit();
             return response()->json([
                 'status' => true,
-                'contatos' => $contatos,
-                'sucess' => "Contato deletado com sucesso",
+                'contatos' => $contatoEmpresaDTO,
+                'sucess' => "Contato da Empresa deletado com sucesso",
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
