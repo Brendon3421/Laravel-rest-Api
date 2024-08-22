@@ -9,6 +9,7 @@ class EnderecoDTO
 {
     public $id;
     public $user_name;
+    public $empresa_id;
     public $situacao_id;
     public $name;
     public $cep;
@@ -22,6 +23,7 @@ class EnderecoDTO
     public function __construct(
         $id = null,
         $user_name = null,
+        $empresa_id = null,
         $situacao_id = null,
         $name = null,
         $cep = null,
@@ -34,6 +36,7 @@ class EnderecoDTO
     ) {
         $this->id = $id;
         $this->user_name = $user_name;
+        $this->empresa_id = $empresa_id;
         $this->situacao_id = $situacao_id;
         $this->name = $name;
         $this->cep = $cep;
@@ -50,6 +53,26 @@ class EnderecoDTO
         return new self(
             $request->id,
             $user_id,
+            $request->empresa_id,
+            $request->situacao_id,
+            $request->name,
+            $request->cep,
+            $request->rua,
+            $request->numero,
+            $request->complemento,
+            $request->ip(),
+            now(),
+            $request->updated_at ?? now()
+        );
+    }
+
+
+    public static function makeFromRequestEmpresa(EnderecoRequest $request, $empresa_id): self
+    {
+        return new self(
+            $request->id,
+            $request->user_id,
+            $empresa_id,
             $request->situacao_id,
             $request->name,
             $request->cep,
@@ -67,6 +90,7 @@ class EnderecoDTO
         return new self(
             $endereco->id,
             $endereco->user->name ?? 'Usuário não encontrado',
+            $endereco->empresa_id,
             $endereco->situacao->name ?? 'Situação não encontrada',
             $endereco->name,
             $endereco->cep,
@@ -84,7 +108,8 @@ class EnderecoDTO
         return [
             'id' => $this->id,
             'Nome do Usuario' => $this->user_name,
-            'Situacao' => $this->situacao_id,
+            'empresa_id' => $this->empresa_id,
+            'situacao' => $this->situacao_id,
             'name' => $this->name,
             'cep' => $this->cep,
             'rua' => $this->rua,

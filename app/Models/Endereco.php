@@ -18,6 +18,7 @@ class Endereco extends Model
     // Defina quais campos podem ser preenchidos em massa
     protected $fillable = [
         'user_id',
+        'empresa_id',
         'situacao_id',
         'name',
         'cep',

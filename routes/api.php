@@ -65,8 +65,8 @@ Route::get('/empresas/{empresas}', [EmpresasController::class, 'show']); // http
 Route::post('/contato/empresa', [ContatoEmpresaController::class, 'store']);
 Route::get('/contato/empresa', [ContatoEmpresaController::class, 'index']);
 Route::get('/contato/empresa/{contatoEmpresa}', [ContatoEmpresaController::class, 'show']);
-Route::delete('/contatos/empresa/{contatos}', [ContatosController::class, 'destroy']);
-Route::put('/contatos/empresa/{contatos}', [ContatosController::class, 'update']);
+Route::delete('/contato/empresa/{contatoEmpresa}', [ContatoEmpresaController::class, 'destroy']);
+Route::put('/contato/empresa/{contatoEmpresa}', [ContatoEmpresaController::class, 'update']);
 // rotas que sao necessarios os tokens de autenticacao 
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 route::group(['middleware' => ['auth:sanctum']], function () {
@@ -93,5 +93,9 @@ route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/contatos/{contatos}', [ContatosController::class, 'update']);
 
     //empresa
-    Route::post('/empresas', [EmpresasController::class, 'store']);
+    Route::post('/empresas', [EmpresasController::class ,'store']);
+
+
+
+
 });

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 255);
             $table->foreignId('user_id')->nullable(); //o usuario que conter sera o dono da empresa!, o super-admin
             $table->foreignId('situacao_id')->default(1); 
-            $table->foreignId('endereco_id')->nullable(); 
             $table->foreignId('contato_empresa_id')->nullable(); 
             $table->string('cnpj', 14); 
             $table->string('razao_social', 255);

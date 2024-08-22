@@ -11,7 +11,6 @@ class EmpresasDTO
     public $name;
     public $user_id;
     public $situacao_id;
-    public $endereco_id;
     public $contato_empresa_id;
     public $cnpj;
     public $razao_social;
@@ -24,9 +23,8 @@ class EmpresasDTO
         $id,
         $name,
         $user_id,
+        $situacao_id, // Corrigido para situacao_id antes de contato_empresa_id
         $contato_empresa_id,
-        $situacao_id,
-        $endereco_id,
         $cnpj,
         $razao_social,
         $inscricao_estadual,
@@ -37,8 +35,7 @@ class EmpresasDTO
         $this->id = $id;
         $this->name = $name;
         $this->user_id = $user_id;
-        $this->situacao_id = $situacao_id;
-        $this->endereco_id = $endereco_id;
+        $this->situacao_id = $situacao_id; // Agora é atribuído corretamente
         $this->contato_empresa_id = $contato_empresa_id;
         $this->cnpj = $cnpj;
         $this->razao_social = $razao_social;
@@ -48,6 +45,7 @@ class EmpresasDTO
         $this->updated_at = $updated_at;
     }
 
+
     public static function fromModel(Empresas $empresas): self
     {
         return new self(
@@ -55,7 +53,6 @@ class EmpresasDTO
             $empresas->name,
             $empresas->user->name,
             $empresas->situacao_id,
-            $empresas->endereco_id,
             $empresas->contato_empresa_id,
             $empresas->cnpj,
             $empresas->razao_social,
@@ -73,12 +70,28 @@ class EmpresasDTO
             $request->name,
             $user_id,
             $request->situacao_id,
-            $request->endereco_id,
             $request->contato_empresa_id,
             $request->cnpj,
             $request->razao_social,
             $request->inscricao_estadual,
             $request->fundacao,
+            now(),
+            now()
+        );
+    }
+
+    public static function fromModelCreate(array $data): self
+    {
+        return new self(
+            $data['id'] ?? null,
+            $data['name'],
+            $data['user_id'],
+            $data['situacao_id'] ?? 1,
+            $data['contato_empresa_id'] ?? null,
+            $data['cnpj'],
+            $data['razao_social'] ?? null,
+            $data['inscricao_estadual'],
+            $data['fundacao'] ?? null,
             now(),
             now()
         );
@@ -91,7 +104,7 @@ class EmpresasDTO
             'name' => $this->name,
             'user_id' => $this->user_id,
             'situacao_id' => $this->situacao_id,
-            'endereco_id' => $this->endereco_id,
+            // 'endereco_id' => $this->endereco_id,
             'contato_empresa_id' => $this->contato_empresa_id,
             'cnpj' => $this->cnpj,
             'razao_social' => $this->razao_social,

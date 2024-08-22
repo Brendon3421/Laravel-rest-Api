@@ -45,6 +45,7 @@ class ContatoEmpresaServices
     public function listarContatosId(ContatoEmpresa $contatoEmpresa): JsonResponse
     {
         try {
+            exit;
             $contatoEmpresa->load(['empresa']);
             $contatosDTO = ContatoEmpresaDTO::fromModel($contatoEmpresa);
 

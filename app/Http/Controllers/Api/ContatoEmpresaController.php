@@ -34,9 +34,8 @@ class ContatoEmpresaController extends Controller
     {
         return $this->contatoEmpresaServices->editarContatos($request, $contatoEmpresa);
     }
-    public function delete(ContatoEmpresa $contatoEmpresa ): JsonResponse
+    public function delete(ContatoEmpresa $contatoEmpresa): JsonResponse
     {
         return $this->contatoEmpresaServices->excluirContatoUser($contatoEmpresa);
     }
-
 }

@@ -14,8 +14,7 @@ use App\Models\Endereco;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-
-use function PHPSTORM_META\type;
+use Dotenv\Exception\ValidationException;
 
 class EmpresasServices
 {
@@ -68,42 +67,48 @@ class EmpresasServices
     }
 
 
-    public function criarEmpresas(EmpresasRequest $request, EnderecoRequest $enderecoRequest, ContatoEmpresaRequest $contatoEmpresaRequest)
-    {
+    public function criarEmpresas(
+        EmpresasRequest $request,
+        EnderecoRequest $enderecoRequest, 
+        ContatoEmpresaRequest $contatoEmpresaRequest
+    ) {
         try {
             DB::beginTransaction();
             $userId = auth()->id();
-            // criou a empresa
-            // dd($request);
+
+            // Criar a empresa
             $empresasDTO = EmpresasDTO::makefromModel($request, $userId)->toArray();
             $empresaModel = Empresas::create($empresasDTO);
-            dd($empresaModel);
             $empresasModel = EmpresasDTO::fromModel($empresaModel)->toArray();
             $empresa_id = $empresaModel->id;
-            //crio o endereco da empresa
-            $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest->validated(), $userId)->toArray();
+            // Criar o endereço da empresa
+            $enderecoDTO = EnderecoDTO::makeFromRequestEmpresa($enderecoRequest, $empresa_id)->toArray();
             $enderecoModel = Endereco::create($enderecoDTO);
             $enderecoDTO = EnderecoDTO::fromModel($enderecoModel, $userId)->toArray();
-            //contato falta fazer
-            $sub_empresa = null; //vai ficar como null pois nao tem sub empresa aqui!
-            $contatoEmpresaDTO = ContatoEmpresaDTO::makeFromModel($contatoEmpresaRequest->validated(), $empresa_id, $sub_empresa);
-            $contatoModel = ContatoEmpresa::create($contatoEmpresaDTO);
-            $contatoEmpresaDTO = ContatoEmpresaDTO::fromModel($contatoModel);
-
-
-            exit;
-
-
+            
+            // // Criar o contato da empresa
+            $sub_empresa = null; // Fica como null pois não há sub-empresa neste contexto
+            $contatoEmpresaDTO = ContatoEmpresaDTO::makeFromModel($contatoEmpresaRequest, $empresa_id, $sub_empresa);
+            $contatoModel = ContatoEmpresa::create($contatoEmpresaDTO->toArray());
+            $contatoEmpresaDTO = ContatoEmpresaDTO::fromModel($contatoModel)->toArray();
             DB::commit();
             return response()->json([
                 'status' => true,
                 'Empresas' => $empresasModel,
                 'Endereco' => $enderecoDTO,
+                'ContatoEmpresa' => $contatoEmpresaDTO,
                 'message' => 'Sucesso em criar Empresa',
             ], 200);
-        } catch (Exception $e) {
+        } catch (ValidationException $e) {
             return response()->json([
                 'status' => true,
+                'message' => "erro na validacao",
+                'error' => $e->getMessage(),
+            ], 422);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
                 'Exception' => $e->getMessage(),
                 'error' => 'Erro ao tentar criar Empresa',
             ], 400);

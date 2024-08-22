@@ -21,7 +21,7 @@ class ContatoEmpresaDTO
     public $updated_at;
     public $created_at;
 
-    public function __construct($id, $empresa_id, $sub_empresa_id,$nome, $email, $celular, $telefone_fixo, $imagem, $descricao, $created_at, $updated_at)
+    public function __construct($id, $empresa_id, $sub_empresa_id, $nome, $email, $celular, $telefone_fixo, $imagem, $descricao, $created_at, $updated_at)
     {
         $this->id = $id;
         $this->empresa_id = $empresa_id;
@@ -53,7 +53,7 @@ class ContatoEmpresaDTO
         );
     }
 
-    public static function makeFromModel(ContatoEmpresaRequest $request, $empresa_id ,$sub_empresa_id): self
+    public static function makeFromModel(ContatoEmpresaRequest $request, $empresa_id, $sub_empresa_id): self
     {
         return new self(
             null, // ID será definido pelo banco de dados após a criação
@@ -63,7 +63,7 @@ class ContatoEmpresaDTO
             $request->email,
             $request->celular,
             $request->telefone_fixo,
-            $request->file('imagem')->store('images/contatoEmpresa'),
+            $request->imagem,
             $request->descricao,
             now(),
             now()

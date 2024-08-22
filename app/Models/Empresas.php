@@ -19,13 +19,11 @@ class Empresas extends Model
         "name",
         "user_id",
         "situacao_id",
-        "endereco_id",
         "contato_empresa_id",
         "cnpj",
         "razao_social",
         "inscricao_estadual",
         "fundacao",
-        "contatoEmpresa_id"
     ];
 
 
