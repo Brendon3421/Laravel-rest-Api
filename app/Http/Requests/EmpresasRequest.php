@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class EmpresasRequest extends FormRequest
 {
@@ -35,13 +36,15 @@ class EmpresasRequest extends FormRequest
      */
     public function rules(): array
     {
+        $empresaid = $this->route('empresas');
+        // dd($empresaid->id);
         return [
             "name" => 'required|string',
             "user_id" => 'nullable|exists:users,id', // Verifique se a tabela 'users' é correta
             "situacao_id" => 'required|exists:situacao,id',
             "endereco_id" => 'nullable|exists:endereco,id',
             "contato_empresa_id" => 'nullable|exists:contato_empresa,id',
-            "cnpj" => 'required|unique:empresas,cnpj',
+            "cnpj" =>   'required|unique:empresas,cnpj,'. ($empresaid ? $empresaid->id : 'null'),
             "inscricao_estadual" => 'required|string|max:255',
             "fundacao" => 'required|date',
         ];

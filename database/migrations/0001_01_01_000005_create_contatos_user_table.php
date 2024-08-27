@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('nome');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->integer('celular')->unique();
             $table->integer('telefone_fixo');
             $table->string('imagem')->nullable();

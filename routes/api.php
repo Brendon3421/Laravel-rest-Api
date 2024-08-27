@@ -57,9 +57,6 @@ Route::get('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'show']
 Route::post('/abilitiyRole', [abilityRoleController::class, 'store']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para adicionar uma habilidade a regra
 Route::put('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'update']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
 Route::delete('/abilitiyRole/{abilityRole}', [abilityRoleController::class, 'destroy']); // http://127.0.0.1:8000/api/abilitiyRole/{abilitiyRole} api para editar uma habilidade a regra
-//route Empresas 
-Route::get('/empresas', [EmpresasController::class, 'index']); // http://127.0.0.1:8000/api/empresas listar empresas
-Route::get('/empresas/{empresas}', [EmpresasController::class, 'show']); // http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
 
 //contato Empresa
 Route::post('/contato/empresa', [ContatoEmpresaController::class, 'store']);
@@ -71,14 +68,14 @@ Route::put('/contato/empresa/{contatoEmpresa}', [ContatoEmpresaController::class
 Route::post('/logout/{user}', [LoginController::class, 'logout'])->name('logout'); //rota de logout do usuario
 route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/users', [UserController::class, 'index']); //get http://127.0.0.1:8000/api/users?page=1 exibe conteudo de  todos os usuarios 
-
+    
     //rotas endereco
     Route::get('/endereco', [EnderecoController::class, 'index']); //get http://127.0.0.1:8000/api/endereco/1 Exibe todos os endereco 
     Route::get('/endereco/{endereco}', [EnderecoController::class, 'show']); //get http://127.0.0.1:8000/api/endereco/{endereco} exibe endereco do Id solicitado
     Route::post('/endereco', [EnderecoController::class, 'store']); //get http://127.0.0.1:8000/api/endereco/ Cria um endereco
     Route::put('/endereco/{endereco}', [EnderecoController::class, 'update']); //get http://127.0.0.1:8000/api/endereco/{{endereco}} edita um endereco solicitado 
     Route::delete('/endereco/{endereco}', [EnderecoController::class, 'destroy']); //get http://127.0.0.1:8000/api/endereco/{{endereco}} Exclui um endereco solicitado
-
+    
     //rotas do genero
     Route::get('/genero', [GeneroController::class, 'index'])->name('genero'); //get http://127.0.0.1:8000/api/genero/ , exibe conteudo dos generos cadastrados
     Route::post('/genero', [GeneroController::class, 'store']); //post http://127.0.0.1:8000/api/genero/ , cria um genero
@@ -91,11 +88,15 @@ route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/contatos/{contatos}', [ContatosController::class, 'show']);
     Route::delete('/contatos/{contatos}', [ContatosController::class, 'destroy']);
     Route::put('/contatos/{contatos}', [ContatosController::class, 'update']);
-
+    
     //empresa
-    Route::post('/empresas', [EmpresasController::class ,'store']);
-
-
-
-
+    Route::post('/empresas', [EmpresasController::class, 'store']);
+    Route::put('/empresas/{empresas}', [EmpresasController::class, 'update']);
+    Route::delete('/empresas/{empresas}', [EmpresasController::class, 'destroy']);
+    Route::get('/empresas', [EmpresasController::class, 'index']); // http://127.0.0.1:8000/api/empresas listar empresas
+    Route::get('/empresas/{empresas}', [EmpresasController::class, 'show']); // http://127.0.0.1:8000/api/empresas/{empresas} listar empresas especifica
+    
+    
+    
+    
 });

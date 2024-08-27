@@ -51,7 +51,7 @@ class EmpresasDTO
         return new self(
             $empresas->id,
             $empresas->name,
-            $empresas->user->name,
+            $empresas->user_id ,
             $empresas->situacao_id,
             $empresas->contato_empresa_id,
             $empresas->cnpj,
@@ -80,19 +80,20 @@ class EmpresasDTO
         );
     }
 
-    public static function fromModelCreate(array $data): self
+    public static function updatedfromModel(EmpresasRequest $request, $user_id ,$empresa_id): self
     {
+
         return new self(
-            $data['id'] ?? null,
-            $data['name'],
-            $data['user_id'],
-            $data['situacao_id'] ?? 1,
-            $data['contato_empresa_id'] ?? null,
-            $data['cnpj'],
-            $data['razao_social'] ?? null,
-            $data['inscricao_estadual'],
-            $data['fundacao'] ?? null,
-            now(),
+            $empresa_id,
+            $request->name,
+            $user_id,
+            $request->situacao_id,
+            $request->contato_empresa_id,
+            $request->cnpj,
+            $request->razao_social,
+            $request->inscricao_estadual,
+            $request->fundacao,
+            $request->created_at,
             now()
         );
     }
@@ -104,7 +105,6 @@ class EmpresasDTO
             'name' => $this->name,
             'user_id' => $this->user_id,
             'situacao_id' => $this->situacao_id,
-            // 'endereco_id' => $this->endereco_id,
             'contato_empresa_id' => $this->contato_empresa_id,
             'cnpj' => $this->cnpj,
             'razao_social' => $this->razao_social,

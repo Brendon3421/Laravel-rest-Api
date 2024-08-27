@@ -83,7 +83,8 @@ class UserServices
             $userDTO = UserDTO::fromModelCreate($request->validated());
             $user = User::create($userDTO->toArray());
             // Validar os dados de endereço e criar o DTO
-            $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id);
+            $empresas_id = null;
+            $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id, $empresas_id);
             $enderecoData = $enderecoDTO->toArray();
             $enderecoData['user_id'] = $user->id;
             $endereco = Endereco::create($enderecoData);
@@ -119,8 +120,7 @@ class UserServices
         }
     }
 
-
-    public function editarUsuario(User $user, UserRequest $request, EnderecoRequest $enderecoRequest)
+    public function editarUsuario(User $user, UserRequest $request, EnderecoRequest $enderecoRequest, contatosUser $contatosRequest)
     {
         DB::beginTransaction();
         try {
@@ -129,20 +129,32 @@ class UserServices
             $user->fill($userDTO->toArray());
             $user->save();
 
-            // Verificar se o usuário tem um endereço associado
-            $endereco = $user->endereco;
+            // Atualizar ou criar o endereço
+            $endereco = Endereco::where('user_id', $user->id)->first();
 
             if ($endereco) {
-                // Atualizar os dados do endereço existente
-                $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id);
+                $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id, $user->empresa_id);
                 $endereco->fill($enderecoDTO->toArray());
                 $endereco->save();
             } else {
-                // Criar um novo endereço se não existir
-                $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id);
+                $enderecoDTO = EnderecoDTO::makeFromRequest($enderecoRequest, $user->id, $user->empresa_id);
                 $endereco = new Endereco($enderecoDTO->toArray());
                 $endereco->user_id = $user->id;
                 $endereco->save();
+            }
+
+            // Atualizar ou criar o contato
+            $contato = contatosUser::where('user_id', $user->id)->first();
+
+            if ($contato) {
+                $contatoDTO = ContatosDTO::updatefromModel($contatosRequest, $user->id);
+                $contato->fill($contatoDTO->toArray());
+                $contato->save();
+            } else {
+                $contatoDTO = ContatosDTO::updatefromModel($contatosRequest, $user->id);
+                $contato = new contatosUser($contatoDTO->toArray());
+                $contato->user_id = $user->id;
+                $contato->save();
             }
 
             DB::commit();
@@ -150,6 +162,7 @@ class UserServices
                 'status' => true,
                 'user' => $user,
                 'endereco' => $endereco,
+                'contato' => $contato,
                 'message' => "Usuário editado com sucesso"
             ], 200);
         } catch (Exception $e) {

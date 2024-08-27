@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contato_empresa', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('email')->unique();
+            $table->string('email')();
             $table->integer('celular')->unique();
             $table->integer('telefone_fixo');
             $table->string('imagem')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
         });
     }
 
-    /**
+    /**w
      * Reverse the migrations.
      */
     public function down(): void

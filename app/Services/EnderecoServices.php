@@ -1,18 +1,21 @@
 <?php
+
 namespace App\Services;
 
 use App\DTOs\EnderecoDTO;
 use App\Http\Requests\EnderecoRequest;
+use App\Models\Empresas;
 use App\Models\Endereco;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Dotenv\Exception\ValidationException;
 
 class EnderecoServices
 {
     public function listarEndereco()
     {
         try {
-            $enderecos = Endereco::with(['user', 'situacao'])->orderBy('id', 'DESC')->paginate(3);
+            $enderecos = Endereco::with(['user', 'empresas', 'situacao'])->orderBy('id', 'DESC')->paginate(3);
             $enderecoData = $enderecos->map(function ($endereco) {
                 return EnderecoDTO::fromModel($endereco)->toArray();
             });
@@ -57,18 +60,19 @@ class EnderecoServices
         }
     }
 
-    public function criarEndereco(EnderecoRequest $request)
+    public function criarEndereco(EnderecoRequest $request,)
     {
         try {
             DB::beginTransaction();
             $userId = auth()->id();
-
-            $enderecoDTO = EnderecoDTO::makeFromRequest($request, $userId);
-
+            dd($userId);
+            $empresas = $request->empresa_id;
+            $enderecoDTO = EnderecoDTO::makeFromRequest($request, $userId, $empresas);
             $enderecoData = $enderecoDTO->toArray();
             $enderecoData['user_id'] = $userId;
-
             $endereco = Endereco::create($enderecoData);
+
+
 
             DB::commit();
             return response()->json([
@@ -76,6 +80,13 @@ class EnderecoServices
                 'Endereco' => $endereco,
                 'message' => 'Endereço cadastrado com sucesso'
             ], 200);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'error' => "error na validacao",
+                'validacao' => $e->getMessage(),
+            ], 404);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -86,19 +97,29 @@ class EnderecoServices
         }
     }
 
-    public function editarEndereco(EnderecoRequest $request, Endereco $endereco)
+    public function editarEndereco(EnderecoRequest $request, Endereco $endereco, Empresas $empresas)
     {
         try {
             DB::beginTransaction();
+            // Preenche o objeto $endereco com os dados validados do request
             $endereco->fill($request->validated());
             $endereco->save();
-            $enderecoDTO = EnderecoDTO::makeFromRequest($request, $endereco->user_id);
+            // Atualize o EnderecoDTO com base no endereço existente
+            $empresas = $empresas->id;
+            $enderecoDTO = EnderecoDTO::fromModel($endereco, $endereco->user_id, $empresas);
             DB::commit();
             return response()->json([
                 'status' => true,
-                'endereco' => $enderecoDTO->toArray(),
+                'endereco' => $enderecoDTO,
                 'message' => 'Endereço atualizado com sucesso'
             ], 200);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'error' => "Erro na validação",
+                'validacao' => $e->getMessage(),
+            ], 404);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -108,6 +129,7 @@ class EnderecoServices
             ], 400);
         }
     }
+
 
     public function excluirEndereco(Endereco $endereco)
     {

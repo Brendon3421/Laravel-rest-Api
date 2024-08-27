@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\ContatoEmpresaServices;
 use App\Services\EmpresasServices;
+use App\Services\EnderecoServices;
 use Illuminate\Support\ServiceProvider;
 
 class EmpresasServiceProvider extends ServiceProvider
@@ -13,7 +15,11 @@ class EmpresasServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(EmpresasServices::class,function ($app){
-            return new EmpresasServices;
+
+           $enderecoServices = $app->make(EnderecoServices::class);
+           $ContatoEmpresaServices = $app->make(ContatoEmpresaServices::class);
+
+            return new EmpresasServices($enderecoServices,$ContatoEmpresaServices);
     });
     }
 

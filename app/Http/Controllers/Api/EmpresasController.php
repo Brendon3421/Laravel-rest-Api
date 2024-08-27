@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContatoEmpresaRequest;
 use App\Http\Requests\EmpresasRequest;
 use App\Http\Requests\EnderecoRequest;
+use App\Models\ContatoEmpresa;
 use App\Models\Empresas;
+use App\Models\Endereco;
 use App\Services\EmpresasServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,7 +34,14 @@ class EmpresasController extends Controller
 
     public function store(EmpresasRequest $request, EnderecoRequest $enderecoRequest, ContatoEmpresaRequest $contatoEmpresaRequest): JsonResponse
     {
-        // dd($request->all());
         return $this->empresasServices->criarEmpresas($request, $enderecoRequest, $contatoEmpresaRequest);
+    }
+    public function update(Empresas $empresas, EmpresasRequest $request): JsonResponse
+    {
+        return $this->empresasServices->editarEmpresa($empresas, $request);
+    }
+    public function destroy(Empresas $empresas): JsonResponse
+    {
+        return $this->empresasServices->deletarempresas($empresas);
     }
 }

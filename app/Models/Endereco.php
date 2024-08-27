@@ -36,8 +36,10 @@ class Endereco extends Model
     {
         return $this->belongsTo(Situacao::class);
     }
-
-
+    public function empresas()
+    {
+        return $this->belongsTo(Empresas::class);
+    }
     
 }
 

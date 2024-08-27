@@ -4,9 +4,8 @@ namespace App\Services;
 
 use App\DTOs\ContatoEmpresaDTO;
 use App\Http\Requests\ContatoEmpresaRequest;
-use App\Http\Requests\ContatosUserRequest;
 use App\Models\ContatoEmpresa;
-use App\Models\contatosUser;
+use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +79,12 @@ class ContatoEmpresaServices
                 'contato' => $contato,
                 'message' => 'Contato foi criado com sucesso',
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => true,
+                'message' => "erro na validacao",
+                'error' => $e->getMessage(),
+            ], 422);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([

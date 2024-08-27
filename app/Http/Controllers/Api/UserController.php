@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContatosUserRequest;
 use App\Http\Requests\EnderecoRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\contatosUser;
 use App\Models\User;
 use App\Services\UserServices;
 use Illuminate\Http\JsonResponse;
@@ -34,9 +35,9 @@ class UserController extends Controller
         return $this->userServices->criarUsuario($request, $enderecoRequest,$contatosUserRequest);
     }
 
-    public function update(UserRequest $request, User $user,  EnderecoRequest $enderecoRequest) : JsonResponse
+    public function update(UserRequest $request, User $user,  EnderecoRequest $enderecoRequest,  contatosUser $contatos) : JsonResponse
     {
-        return $this->userServices->editarUsuario($user, $request, $enderecoRequest);
+        return $this->userServices->editarUsuario($user, $request, $enderecoRequest,$contatos);
     }
 
     public function destroy(User $user): JsonResponse

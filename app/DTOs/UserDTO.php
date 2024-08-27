@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DTOs;
 
 use App\Http\Requests\UserRequest;
@@ -66,18 +67,17 @@ class UserDTO
         return new self(
             $usuario->id,
             $request->name,
-            $request->genero_id ?? $usuario->name,
-            $request->situacao_id ?? $usuario->name,
-            $request->empresa_id ?? $usuario->name,
+            $request->genero_id ?? $usuario->genero_id,
+            $request->situacao_id ?? $usuario->situacao_id,
+            $request->empresa_id ?? $usuario->empresa_id,
             $request->email,
             $request->email_verified_at ?? $usuario->email_verified_at,
             $request->password ?? $usuario->password,
-            $request->remember_token ?? $usuario->remember_token,
+            $request->remember_token ?? $usuario->remember_token,   
             $usuario->created_at,
             now()
         );
     }
-
     public static function fromModelCreate(array $data): self
     {
         return new self(

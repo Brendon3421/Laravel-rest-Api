@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EnderecoRequest;
+use App\Models\Empresas;
 use App\Models\Endereco;
 use App\Services\EnderecoServices;
 use Illuminate\Http\JsonResponse;
@@ -33,9 +34,9 @@ class EnderecoController extends Controller
         return $this->enderecoServices->criarEndereco($request);
     }
     //Editar Endereco
-    public function update(EnderecoRequest $request, Endereco $endereco): JsonResponse
+    public function update(EnderecoRequest $request, Endereco $endereco, Empresas $empresas_id,): JsonResponse
     {
-        return $this->enderecoServices->editarEndereco($request ,$endereco);
+        return $this->enderecoServices->editarEndereco($request ,$endereco, $empresas_id);
     }
     public function destroy(Endereco $endereco): JsonResponse
     {

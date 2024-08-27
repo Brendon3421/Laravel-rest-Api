@@ -64,6 +64,23 @@ class ContatosDTO
         );
     }
 
+    public static function updatefromModel(contatosUser $contatos,$user_id): self
+    {
+        return new self(
+            $contatos->id,
+            $user_id,
+            $contatos->nome,
+            $contatos->email,
+            $contatos->celular,
+            $contatos->telefone_fixo,
+            $contatos->imagem,
+            $contatos->descricao,
+            now(),
+            $contatos->created_at,
+        );
+    }
+
+
     public function toArray(): array
     {
         return [

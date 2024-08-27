@@ -19,6 +19,19 @@ use Dotenv\Exception\ValidationException;
 class EmpresasServices
 {
 
+    public $EnderecoServices;
+    public $contatoEmpresaServices;
+
+    public function __construct(
+        EnderecoServices $EnderecoServices,
+        ContatoEmpresaServices $contatoEmpresaServices,
+
+    ) {
+        $this->EnderecoServices = $EnderecoServices;
+        $this->contatoEmpresaServices = $contatoEmpresaServices;
+    }
+
+
 
     public function listarEmpresas(): JsonResponse
     {
@@ -69,7 +82,7 @@ class EmpresasServices
 
     public function criarEmpresas(
         EmpresasRequest $request,
-        EnderecoRequest $enderecoRequest, 
+        EnderecoRequest $enderecoRequest,
         ContatoEmpresaRequest $contatoEmpresaRequest
     ) {
         try {
@@ -85,7 +98,7 @@ class EmpresasServices
             $enderecoDTO = EnderecoDTO::makeFromRequestEmpresa($enderecoRequest, $empresa_id)->toArray();
             $enderecoModel = Endereco::create($enderecoDTO);
             $enderecoDTO = EnderecoDTO::fromModel($enderecoModel, $userId)->toArray();
-            
+
             // // Criar o contato da empresa
             $sub_empresa = null; // Fica como null pois não há sub-empresa neste contexto
             $contatoEmpresaDTO = ContatoEmpresaDTO::makeFromModel($contatoEmpresaRequest, $empresa_id, $sub_empresa);
@@ -111,6 +124,61 @@ class EmpresasServices
                 'status' => false,
                 'Exception' => $e->getMessage(),
                 'error' => 'Erro ao tentar criar Empresa',
+            ], 400);
+        }
+    }
+
+
+    public function editarEmpresa(Empresas $empresas, EmpresasRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $userId = auth()->id();
+            $empresa_id = $empresas->id;
+
+            // Criação do DTO da empresa
+            $empresaDTO = EmpresasDTO::updatedfromModel($request, $userId, $empresa_id);
+            $empresas->fill($empresaDTO->toArray());
+            $empresas->save();
+            $empresaDTO = EmpresasDTO::fromModel($empresas);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'Empresas' => $empresaDTO,
+                'message' => 'Sucesso em editar Empresa',
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => true,
+                'message' => "erro na validacao",
+                'error' => $e->getMessage(),
+            ], 422);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'Exception' => $e->getMessage(),
+                'error' => 'Erro ao tentar editar Empresa',
+            ], 400);
+        }
+    }
+
+    public function deletarempresas(Empresas $empresa)
+    {
+        try {
+            DB::beginTransaction();
+            $empresa->delete();
+            $empresaDTO = EmpresasDTO::fromModel($empresa)->toArray();
+            return response()->json([
+                "status" => true,
+                "empresa" => $empresaDTO,
+                "message" => "empresa delatada com sucesso",
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => true,
+                "empresa" => $e->getMessage(),
+                "error" => "Nao foi possivel deletar ",
             ], 400);
         }
     }

@@ -33,7 +33,6 @@ class UserRequest extends FormRequest
             'password' => $userID ? 'nullable|min:6' : 'required|min:6', // senha não é obrigatória na atualização
             'genero_id' => 'required|exists:genero,id',
             'situacao_id' => 'exists:situacao,id',
-            'empresa_id' => 'nullable|exists:empresa,id|'
         ];
     }
 

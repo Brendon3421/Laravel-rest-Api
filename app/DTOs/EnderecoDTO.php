@@ -48,12 +48,12 @@ class EnderecoDTO
         $this->updated_at = $updated_at;
     }
 
-    public static function makeFromRequest(EnderecoRequest $request, $user_id): self
+    public static function makeFromRequest(EnderecoRequest $request, $user_id, $empresa_id): self
     {
         return new self(
             $request->id,
             $user_id,
-            $request->empresa_id,
+            $empresa_id,
             $request->situacao_id,
             $request->name,
             $request->cep,
@@ -87,10 +87,11 @@ class EnderecoDTO
 
     public static function fromModel(Endereco $endereco): self
     {
+        $endereco->load(['user','empresas','situacao']);
         return new self(
             $endereco->id,
             $endereco->user->name ?? 'Usuário não encontrado',
-            $endereco->empresa_id,
+            $endereco->empresas->name ?? "empresa não encontrada",
             $endereco->situacao->name ?? 'Situação não encontrada',
             $endereco->name,
             $endereco->cep,
