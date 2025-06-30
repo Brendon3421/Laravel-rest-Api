@@ -16,10 +16,10 @@ class UserSeeder extends Seeder
    */
   public function run(): void
   {
-    if (!User::where('email', 'brendon@cooperoestesc.com.br')->first()) {
+    if (!User::where('email', 'brendon@synera.com.br')->first()) {
       User::create([
         'name' => 'Brendon',
-        'email' => 'brendon@cooperoestesc.com.br',
+        'email' => 'brendon@synera.com.brr',
         'email_verified_at' => now(), // Define a data de verificação do e-mail como a data atual
         'password' => Hash::make('terra02', ['rounds' => 12]),
         'genero_id' => 2,

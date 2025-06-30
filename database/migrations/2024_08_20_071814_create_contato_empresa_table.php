@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contato_empresa', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('email')();
+            $table->string('email');
             $table->integer('celular')->unique();
             $table->integer('telefone_fixo');
             $table->string('imagem')->nullable();
